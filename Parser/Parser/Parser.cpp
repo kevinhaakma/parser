@@ -35,28 +35,75 @@ size_t stringCount(const std::string& referenceString,
 int main() {
 	//regex (.+\w(?=\t))|(\d{4})|([^\[]+(?=\]))|([^\<]+(?=\>))|([^\{]+(?=\}))|((?<=\t)[^\t].+(?=[\s][(]\d{4}))
 	//Expression("(.+\\w(?=\\t))|(\\d{4})|([^\\[]+(?=\\]))|([^\\<]+(?=\\>))|([^\\{]+(?=\\}))|([\\t].+(?=[\\s][(]\\d{4}))");
+	
+	//string outputFilename;
+	
 	ifstream file;
 	ofstream outputFile;
-	//file.open("ratings.list"); //input ratings
-	file.open("actresses.list"); //input actresses
-	//outputFile.open("output.csv"); //output ratings
-	outputFile.open("actresses.csv"); //output actresses
 
 	string line;
 	string seperator = "; ";
 	smatch match;
 
+	list<string> expressionList;
+
+	enum outputFilename { actressesRoles, actresses, actorsRoles, actors, movies, countries, genres, soundtracks, ratings, directed, directors };
+
 	//ratings
-	//list<string> expressionList = { "([\\d|\\.]{10})","[\\s](\\d[0-9]{0,7})[\\s]","[\\s]([\\d+\\.+\\d]{3})[\\s]","\"(.*)\"","\\((.*)\\)","\\{(.*)\\(","\\(#(\\d).","\\(#\\d.(\\d)." }; //ratings
-	list<string> expressionList = { "^.*?(?=\t)", "(\t(.*)) \([0-9]\{2\}","\(([0-9]...)\)\{1\}","\[(.*)\]\{1\}" };
+	switch (actressesRoles)
+	{
+	case actressesRoles:
+		file.open("actresses.list"); //input actresses
+		outputFile.open("roles.csv"); //output actresses
+		expressionList = { "^.*?(?=\t)", "(\t(.*) \([0-9])\{1\}","\(([0-9]...)\)\{1\}","\[(.*)\]\{1\}" };
+		//^.*?(?=\t) //actress //748 steps
+		//(\t(.*) \([0-9]){1}//movie //3066 steps
+		//\(([0-9]...)\){1} //year //241 steps
+		//\[(.*)\]{1} //role //121 steps
+		break;
+	case actresses:
+		file.open("actresses.list"); //input actresses
+		outputFile.open("actors.csv"); //output actresses
+		expressionList = { "", "","","" };
+		//
+		//
+		//
+		//
+		break;
+	case actorsRoles:
+		file.open("actors.list"); //input actresses
+		outputFile.open("roles.csv"); //output actresses
+		expressionList = { "^.*?(?=\t)", "(\t(.*) \([0-9])\{1\}","\(([0-9]...)\)\{1\}","\[(.*)\]\{1\}" };
+		//
+		//
+		//
+		//
+		break;
+	case actors:
+		file.open("actors.list"); //input actors
+		outputFile.open("actors.csv"); //output actors
+		expressionList = { "", "","","" };
+		//
+		//
+		//
+		//
+		break;
+	case ratings:
+		file.open("actors.list"); //input actors
+		outputFile.open("actors.csv"); //output actors
+		expressionList = { "([\\d|\\.]{10})","[\\s](\\d[0-9]{0,7})[\\s]","[\\s]([\\d+\\.+\\d]{3})[\\s]","\"(.*)\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d).","\\(#\\d.(\\d)." }; //ratings
+		//
+		//
+		//
+		//
+		break;
+	default:
 
-	//^.*?(?=\t) //actress //748 steps
-	//(\t(.*)) \([0-9]{2} //movie //2010 steps
-	//\(([0-9]...)\){1} //year //241 steps
-	//\[(.*)\]{1} //role //121 steps
-	
+		break;
+	}
+		
 
-
+	//main parser
 	if (file.is_open()) {
 		//0 = date
 		//1 = movieName

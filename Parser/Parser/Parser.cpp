@@ -1,5 +1,9 @@
 // Parser.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+//Wiebe de Boer
+//Elon Gielink
+//Casper Hooft
+//Kevin haakma
+//Nils Hettinga
 
 #include "pch.h"
 #include <iostream>

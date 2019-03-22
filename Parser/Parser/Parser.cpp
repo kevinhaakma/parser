@@ -53,38 +53,31 @@ int main() {
 	case actresses:
 		inputFileName = "actresses.list"; //input actresses
 		outputFileName = "actors.csv"; //output actresses
-		expressionList = { "", "","","" }; //actresses
-		//1=
-		//2=
-		//3=
-		//4=
+		expressionList = { "^.*?(?=\\t)" }; //actresses
+		//1= actor ^.*?(?=\t)
 		break;
 	case actorsRoles:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "roles.csv"; //output actors
 		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\]\{1\}" }; //actors roles koppel
-		//1=
-		//2=
-		//3=
-		//4=
+		//1= actor
+		//2= movie
+		//3= year
+		//4= role
 		break;
 	case actors:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "actors.csv"; //output actors
-		expressionList = { "", "","","" }; //actors
-		//1=
-		//2=
-		//3=
-		//4=
+		expressionList = { "^.*?(?=\t)" }; //actors
+		//1= actor ^.*?(?=\t)
 		break;
 	case directed:
 		inputFileName = "directors.list"; //input directed
 		outputFileName = "directed.csv"; //output directed
-		expressionList = { "", "","","" }; //directed koppel
-		//1=
-		//2=
-		//3=
-		//4=
+		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9]){1}","","" }; //directed koppel
+		//1= director ^.*?(?=\t)
+		//2= movie (\t(.*) \([0-9]){1} //568 steps
+		//3= role such as co-director [0-9]\).*\((.*)\){1}		
 		break;
 	case directors:
 		inputFileName = "directors.list"; //input directors
@@ -120,7 +113,7 @@ int main() {
 		inputFileName = "genres.list"; //input genres
 		outputFileName = "genres.csv"; //output genres
 		expressionList = { "","","" }; //genres
-		//1=
+		//1= 
 		//2=
 		//3=
 		//4=

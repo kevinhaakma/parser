@@ -45,7 +45,7 @@ int main() {
 	case actressesRoles:
 		inputFileName = "actresses.list"; //input actresses
 		outputFileName = "roles.csv"; //output actresses
-		expressionList = { "^.*?(?=\t)", "(\t(.*) \([0-9])\{1\}","\(([0-9]...)\)\{1\}","\[(.*)\]\{1\}" }; //actresses roles koppel
+		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\]\{1\}" }; //actresses roles koppel
 		//1= ^.*?(?=\t) //actress //748 steps
 		//2= (\t(.*) \([0-9]){1}//movie //3066 steps
 		//3= \(([0-9]...)\){1} //year //241 steps
@@ -63,7 +63,7 @@ int main() {
 	case actorsRoles:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "roles.csv"; //output actors
-		expressionList = { "^.*?(?=\t)", "(\t(.*) \([0-9])\{1\}","\(([0-9]...)\)\{1\}","\[(.*)\]\{1\}" }; //actors roles koppel
+		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\]\{1\}" }; //actors roles koppel
 		//1=
 		//2=
 		//3=
@@ -108,11 +108,12 @@ int main() {
 	case countries:
 		inputFileName = "countries.list"; //input countries
 		outputFileName = "countries.csv"; //output countries
-		expressionList = { "","","" }; //countries
-		//1=
-		//2=
-		//3=
-		//4=
+		expressionList = { "\"(.*)\"","\\(([0 - 9].*)\\)\\s","\\{([a - zA - Z].*)\\(","\\(#([0 - 9.] + )\\)}","\\s([a - zA - Z] + )\\s\"" }; //countries
+		//1= Movies title eerste helft = \"(.*)\"
+		//2= jaartal uitgave = \(([0 - 9].*)\)\s
+		//3= naam Episode = \{([a - zA - Z].*)\(
+		//4= weird # data = \(#([0 - 9.] + )\)}
+		//5= country = \s([a - zA - Z] + )\s"
 		break;
 	case genres:
 		inputFileName = "genres.list"; //input genres

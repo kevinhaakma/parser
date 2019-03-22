@@ -25,10 +25,6 @@ int main() {
 	string inputFileName; //input file name
 	string outputFileName; //output file name
 
-	ifstream file(inputFileName); //input file
-	ifstream totalLineCountFile(inputFileName); //line count
-	ofstream outputFile(outputFileName); //output file
-
 	string line; //line for record
 	smatch match; //match
 	string seperator = "; "; //string seperator for csv column
@@ -38,8 +34,25 @@ int main() {
 	//enum with output choices
 	enum outputFilename { actressesRoles, actresses, actorsRoles, actors, directed, directors, movies, countries, genres, soundtracks, ratings };
 
+	//0 actressesRoles
+	//1 actresses
+	//2 actorsRoles
+	//3 actors
+	//4 directed
+	//5 directors
+	//6 movies
+	//7 countries
+	//8 genres
+	//9 soundtracks
+	//10 ratings
+
+
+	int input;
+	cout << "Please enter number: " << endl;
+	cin >> input;
+
 	//ratings
-	switch (actressesRoles)
+	switch (input)
 	{
 	case actressesRoles:
 		inputFileName = "actresses.list"; //input actresses
@@ -55,21 +68,23 @@ int main() {
 		outputFileName = "actors.csv"; //output actresses
 		expressionList = { "^.*?(?=\\t)" }; //actresses
 		//1= actor ^.*?(?=\t)
+		//to do gender en tabs als null eruit
 		break;
 	case actorsRoles:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "roles.csv"; //output actors
 		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\]\{1\}" }; //actors roles koppel
-		//1= actor
-		//2= movie
-		//3= year
-		//4= role
+		//1= actor ^.*?(?=\\t)
+		//2= movie (\\t(.*) \\([0-9])\{1\}
+		//3= year \\(([0-9]...)\\)\{1\}
+		//4= role \\[(.*)\]\{1\}
 		break;
 	case actors:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "actors.csv"; //output actors
 		expressionList = { "^.*?(?=\t)" }; //actors
 		//1= actor ^.*?(?=\t)
+		//to do gender en tabs als null eruit
 		break;
 	case directed:
 		inputFileName = "directors.list"; //input directed
@@ -83,10 +98,8 @@ int main() {
 		inputFileName = "directors.list"; //input directors
 		outputFileName = "directors.csv"; //output directors
 		expressionList = { "", "","","" }; //directors
-		//1=
-		//2=
-		//3=
-		//4=
+		//1= director ^.*?(?=\t)
+		//tabs als null eruit
 		break;
 	case movies:
 		inputFileName = "movies.list"; //input movies
@@ -112,18 +125,20 @@ int main() {
 	case genres:
 		inputFileName = "genres.list"; //input genres
 		outputFileName = "genres.csv"; //output genres
-		expressionList = { "","","" }; //genres
-		//1= 
-		//2=
-		//3=
-		//4=
+		expressionList = { "^(.*?)\\((\\d)","\\((\\d{4})\\)","\\{(.*?)(\\(|\\\})","\\(#(\\d{1,2}).","\\(#\\d{1,2}.(\\d{1,2})\\)\\\}","\\s(\\w+-+\\w+|\\w+)$" }; //genres
+		//1= Title = ^ (.*)\(
+		//2= jaar = \((\d{ 4 })\)
+		//3= episodenaam = { (.*)\(#
+		//4= season = \(#(\d).
+		//5= episode = \(#\d.(\d).
+		//6= genre = \s(\w + -+\w + | \w + )$
 		break;
 	case ratings:
 		inputFileName = "ratings.list"; //input ratings
 		outputFileName = "ratings.csv"; //output ratings
 		expressionList = { "([\\d|\\.]{10})","[\\s](\\d[0-9]{0,7})[\\s]","[\\s]([\\d+\\.+\\d]{3})[\\s]","\"(.*)\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d).","\\(#\\d.(\\d)." }; //ratings
 		//1=distribution ([\\d|\\.]{10})
-		//2=vootes [\\s](\\d[0-9]{0,7})[\\s]
+		//2=votes [\\s](\\d[0-9]{0,7})[\\s]
 		//3=ratings [\\s]([\\d+\\.+\\d]{3})[\\s]
 		//4=title \"(.*)\""
 		//5=year "\\((\\d{4})\\)
@@ -138,6 +153,11 @@ int main() {
 		expressionList = { "","","" }; //expression list
 		break;
 	}
+
+	system("cls");
+	ifstream file(inputFileName); //input file
+	ifstream totalLineCountFile(inputFileName); //line count
+	ofstream outputFile(outputFileName); //output file
 
 	//main
 	int lineCount = 0;

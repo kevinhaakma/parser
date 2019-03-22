@@ -47,7 +47,7 @@ int main() {
 
 	list<string> expressionList;
 
-	enum outputFilename { actressesRoles, actresses, actorsRoles, actors, movies, countries, genres, soundtracks, ratings, directed, directors };
+	enum outputFilename { actressesRoles, actresses, actorsRoles, actors, directed, directors, movies, countries, genres, soundtracks, ratings };
 
 	//ratings
 	switch (actressesRoles)
@@ -55,7 +55,7 @@ int main() {
 	case actressesRoles:
 		file.open("actresses.list"); //input actresses
 		outputFile.open("roles.csv"); //output actresses
-		expressionList = { "^.*?(?=\t)", "(\t(.*) \([0-9])\{1\}","\(([0-9]...)\)\{1\}","\[(.*)\]\{1\}" };
+		expressionList = { "^.*?(?=\t)", "(\t(.*) \([0-9])\{1\}","\(([0-9]...)\)\{1\}","\[(.*)\]\{1\}" }; //actresses roles koppel
 		//^.*?(?=\t) //actress //748 steps
 		//(\t(.*) \([0-9]){1}//movie //3066 steps
 		//\(([0-9]...)\){1} //year //241 steps
@@ -64,16 +64,16 @@ int main() {
 	case actresses:
 		file.open("actresses.list"); //input actresses
 		outputFile.open("actors.csv"); //output actresses
-		expressionList = { "", "","","" };
+		expressionList = { "", "","","" }; //actresses
 		//
 		//
 		//
 		//
 		break;
 	case actorsRoles:
-		file.open("actors.list"); //input actresses
-		outputFile.open("roles.csv"); //output actresses
-		expressionList = { "^.*?(?=\t)", "(\t(.*) \([0-9])\{1\}","\(([0-9]...)\)\{1\}","\[(.*)\]\{1\}" };
+		file.open("actors.list"); //input actors
+		outputFile.open("roles.csv"); //output actors
+		expressionList = { "^.*?(?=\t)", "(\t(.*) \([0-9])\{1\}","\(([0-9]...)\)\{1\}","\[(.*)\]\{1\}" }; //actors roles koppel
 		//
 		//
 		//
@@ -82,15 +82,60 @@ int main() {
 	case actors:
 		file.open("actors.list"); //input actors
 		outputFile.open("actors.csv"); //output actors
-		expressionList = { "", "","","" };
+		expressionList = { "", "","","" }; //actors
+		//
+		//
+		//
+		//
+		break;
+	case directed:
+		file.open("directors.list"); //input directed
+		outputFile.open("directed.csv"); //output directed
+		expressionList = { "", "","","" }; //directed koppel
+		//
+		//
+		//
+		//
+		break;
+	case directors:
+		file.open("directors.list"); //input directors
+		outputFile.open("directors.csv"); //output directors
+		expressionList = { "", "","","" }; //directors
+		//
+		//
+		//
+		//
+		break;
+	case movies:
+		file.open("movies.list"); //input movies
+		outputFile.open("movies.csv"); //output movies
+		expressionList = { "","","" }; //movies
+		//
+		//
+		//
+		//
+		break;
+	case countries:
+		file.open("countries.list"); //input countries
+		outputFile.open("countries.csv"); //output countries
+		expressionList = { "","","" }; //countries
+		//
+		//
+		//
+		//
+		break;
+	case genres:
+		file.open("genres.list"); //input genres
+		outputFile.open("genres.csv"); //output genres
+		expressionList = { "","","" }; //genres
 		//
 		//
 		//
 		//
 		break;
 	case ratings:
-		file.open("actors.list"); //input actors
-		outputFile.open("actors.csv"); //output actors
+		file.open("ratings.list"); //input ratings
+		outputFile.open("ratings.csv"); //output ratings
 		expressionList = { "([\\d|\\.]{10})","[\\s](\\d[0-9]{0,7})[\\s]","[\\s]([\\d+\\.+\\d]{3})[\\s]","\"(.*)\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d).","\\(#\\d.(\\d)." }; //ratings
 		//
 		//

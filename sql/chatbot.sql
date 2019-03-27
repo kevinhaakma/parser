@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Gegenereerd op: 27 mrt 2019 om 12:59
+-- Gegenereerd op: 27 mrt 2019 om 13:33
 -- Serverversie: 5.5.60-MariaDB
 -- PHP-versie: 5.6.30
 
@@ -261,6 +261,60 @@ ALTER TABLE `Roles`
 --
 ALTER TABLE `Soundtracks`
   MODIFY `SoundtrackID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Beperkingen voor geëxporteerde tabellen
+--
+
+--
+-- Beperkingen voor tabel `Actors`
+--
+ALTER TABLE `Actors`
+  ADD CONSTRAINT `Actors_ibfk_1` FOREIGN KEY (`actorID`) REFERENCES `Roles` (`actorID`);
+
+--
+-- Beperkingen voor tabel `Countries`
+--
+ALTER TABLE `Countries`
+  ADD CONSTRAINT `Countries_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`movieID`);
+
+--
+-- Beperkingen voor tabel `Directed`
+--
+ALTER TABLE `Directed`
+  ADD CONSTRAINT `Directed_ibfk_2` FOREIGN KEY (`movieID`) REFERENCES `Movies` (`movieID`),
+  ADD CONSTRAINT `Directed_ibfk_1` FOREIGN KEY (`directorID`) REFERENCES `Directors` (`directorID`);
+
+--
+-- Beperkingen voor tabel `Directors`
+--
+ALTER TABLE `Directors`
+  ADD CONSTRAINT `Directors_ibfk_1` FOREIGN KEY (`directorID`) REFERENCES `Directed` (`directorID`);
+
+--
+-- Beperkingen voor tabel `Genres`
+--
+ALTER TABLE `Genres`
+  ADD CONSTRAINT `Genres_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`movieID`);
+
+--
+-- Beperkingen voor tabel `Ratings`
+--
+ALTER TABLE `Ratings`
+  ADD CONSTRAINT `Ratings_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`movieID`);
+
+--
+-- Beperkingen voor tabel `Roles`
+--
+ALTER TABLE `Roles`
+  ADD CONSTRAINT `Roles_ibfk_2` FOREIGN KEY (`movieID`) REFERENCES `Movies` (`movieID`),
+  ADD CONSTRAINT `Roles_ibfk_1` FOREIGN KEY (`actorID`) REFERENCES `Actors` (`actorID`);
+
+--
+-- Beperkingen voor tabel `Soundtracks`
+--
+ALTER TABLE `Soundtracks`
+  ADD CONSTRAINT `Soundtracks_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`movieID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Gegenereerd op: 27 mrt 2019 om 13:33
+-- Gegenereerd op: 27 mrt 2019 om 15:22
 -- Serverversie: 5.5.60-MariaDB
 -- PHP-versie: 5.6.30
 
@@ -91,7 +91,7 @@ CREATE TABLE `Genres` (
 CREATE TABLE `Movies` (
   `movieID` int(11) NOT NULL,
   `movie` varchar(120) NOT NULL,
-  `year` int(4) NOT NULL,
+  `year` int(4) DEFAULT '9999',
   `studio` varchar(120) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -103,11 +103,11 @@ CREATE TABLE `Movies` (
 
 CREATE TABLE `Ratings` (
   `RatingID` int(11) NOT NULL,
-  `Distribution` varchar(40) NOT NULL,
+  `Distribution` char(10) NOT NULL,
   `Votes` int(11) NOT NULL,
   `Rank` double NOT NULL,
   `MovieID` int(11) NOT NULL,
-  `Year` int(4) NOT NULL
+  `Year` int(4) DEFAULT '9999'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -133,8 +133,8 @@ CREATE TABLE `Soundtracks` (
   `SoundtrackID` int(11) NOT NULL,
   `Soundtrack` varchar(120) NOT NULL,
   `Composer` varchar(120) NOT NULL,
-  `Performer` varchar(120) NOT NULL,
-  `Year` int(4) NOT NULL,
+  `Performer` varchar(120) DEFAULT 'null',
+  `Year` int(4) NOT NULL DEFAULT '9999',
   `MovieID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

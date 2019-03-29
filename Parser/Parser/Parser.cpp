@@ -4,6 +4,7 @@
 //Casper Hooft
 //Kevin haakma
 //Nils Hettinga
+//Groep 10
 
 #include "pch.h"
 #include <iostream>
@@ -33,21 +34,26 @@ int main() {
 
 	//enum with output choices
 	enum outputFilename { actressesRoles, actresses, actorsRoles, actors, directed, directors, movies, countries, genres, soundtracks, ratings };
-
-	//0 actressesRoles
-	//1 actresses
-	//2 actorsRoles
-	//3 actors
-	//4 directed
-	//5 directors
-	//6 movies
-	//7 countries
-	//8 genres
-	//9 soundtracks
-	//10 ratings
-
+	list <string> fileNames = {"0: actressesRoles", "1: actresses", "3: actors", "4: directed", "5: directors", "6: movies", "7: countries", "8: genres", "10: ratings"};
+	//0 actressesRoles (actor index) (needs to be added to roles)
+	//1 actresses (needs to be added to actors) (gender needs to be added)
+	//2 actorsRoles (actor index)
+	//3 actors * (gender needs to be added)
+	//4 directed * (director index)
+	//5 directors *
+	//6 movies * (movie index)
+	//7 countries *
+	//8 genres *
+	//9 soundtracks 
+	//10 ratings *
 
 	int input;
+	for (string x : fileNames)
+	{
+		cout << x << endl;
+	}
+	
+
 	cout << "Please enter number: " << endl;
 	cin >> input;
 
@@ -57,7 +63,7 @@ int main() {
 	case actressesRoles:
 		inputFileName = "actresses.list"; //input actresses
 		outputFileName = "roles.csv"; //output actresses
-		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\]\{1\}" }; //actresses roles koppel
+		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\\]\{1\}" }; //actresses roles koppel
 		//1= ^.*?(?=\t) //actress //748 steps
 		//2= (\t(.*) \([0-9]){1}//movie //3066 steps
 		//3= \(([0-9]...)\){1} //year //241 steps
@@ -73,7 +79,7 @@ int main() {
 	case actorsRoles:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "roles.csv"; //output actors
-		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\]\{1\}" }; //actors roles koppel
+		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\\]\{1\}" }; //actors roles koppel
 		//1= actor ^.*?(?=\\t)
 		//2= movie (\\t(.*) \\([0-9])\{1\}
 		//3= year \\(([0-9]...)\\)\{1\}
@@ -82,17 +88,17 @@ int main() {
 	case actors:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "actors.csv"; //output actors
-		expressionList = { "^.*?(?=\t)" }; //actors
+		expressionList = { "^.*?(?=\\t)" }; //actors
 		//1= actor ^.*?(?=\t)
 		//to do gender en tabs als null eruit
 		break;
 	case directed:
 		inputFileName = "directors.list"; //input directed
 		outputFileName = "directed.csv"; //output directed
-		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9]){1}","","" }; //directed koppel
+		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9]){1}" }; //directed koppel
 		//1= director ^.*?(?=\t)
 		//2= movie (\t(.*) \([0-9]){1} //568 steps
-		//3= role such as co-director [0-9]\).*\((.*)\){1}		
+		//3= role such as co-director [0-9]\).*\((.*)\){1}	
 		break;
 	case directors:
 		inputFileName = "directors.list"; //input directors
@@ -115,12 +121,13 @@ int main() {
 	case countries:
 		inputFileName = "countries.list"; //input countries
 		outputFileName = "countries.csv"; //output countries
-		expressionList = { "\"(.*)\"","\\(([0 - 9].*)\\)\\s","\\{([a - zA - Z].*)\\(","\\(#([0 - 9.] + )\\)}","\\s([a - zA - Z] + )\\s\"" }; //countries
-		//1= Movies title eerste helft = \"(.*)\"
-		//2= jaartal uitgave = \(([0 - 9].*)\)\s
-		//3= naam Episode = \{([a - zA - Z].*)\(
-		//4= season episode = \(#([0 - 9.] + )\)}
-		//5= country = \s([a - zA - Z] + )\s"
+		expressionList = { "^\"(.*?)\"", "\\((\\d{4})\\)", "\\{(.*)\\(#", "\\(#(\\d).", "\\(#\\d.(\\d).", "\\s(\\w+-+\\w+|\\w+)$" }; //countries
+		//1= movie title = ^"(.*?)"
+		//2=	jaar = \((\d{ 4 })\)
+		//3=	episodenaam = { (.*)\(#
+		//4=	season = \(#(\d).
+		//5=	episode = \(#\d.(\d).
+		//6=	country = \s(\w + -+\w + | \w + )$
 		break;
 	case genres:
 		inputFileName = "genres.list"; //input genres
@@ -132,6 +139,17 @@ int main() {
 		//4= season = \(#(\d).
 		//5= episode = \(#\d.(\d).
 		//6= genre = \s(\w + -+\w + | \w + )$
+		break;
+	case soundtracks:
+		inputFileName = "soundtracks.list"; //input sounndtracks
+		outputFileName = "soundtracks.csv"; //output soundtracks
+		expressionList = { "(\\# (.*) \\([0-9])\{1\}","(\\(([0-9]...)\\))\{1\}", "\\-\\s(.*)\\s\\s\{1\}", "\\s\\s(By|by|Written by|Music by|Composed by) (.*)\{1\}", "Performed by (.*)\{1\}" }; //soundtracks
+		//1= movie (\# (.*) (\\# (.*) \\([0-9])\{1\}
+		//2= year (\\(([0-9]...)\\))\{1\}
+		//3= soundtrack \\-\\s(.*)\\s\\s\{1\}
+		//4= composed/written \s\s(By|by|Written by|Music by|Composed by) (.*)\{1\}
+		//5= performer Performed by (.*){1}
+		//multi?
 		break;
 	case ratings:
 		inputFileName = "ratings.list"; //input ratings

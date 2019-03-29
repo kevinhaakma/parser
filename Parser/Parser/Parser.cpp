@@ -184,6 +184,7 @@ int main() {
 	for (totalLineCount = 0; std::getline(totalLineCountFile, line); ++totalLineCount); //counts total amount of lines
 
 	if (file.is_open()) {
+		string lastActor;
 		while (getline(file, line)) { //get nextline from file and store it in line
 			lineCount++;
 
@@ -198,12 +199,16 @@ int main() {
 			//REGEX
 			string output = "";
 			for (auto exp : expressionList) { //foreach expression in expression list => apply expression on line
-				if (regex_search(line, match, regex(exp)))
+				if (regex_search(line, match, regex(exp)) && match.str(1) != "")
 					output += match.str(1) + seperator;
 
 				else
 					output += "NULL" + seperator;
 			}
+
+
+			//output.substr();
+			//if()
 
 			//STRING COUNT
 			if (stringCount(output, "NULL") != expressionList.size()) { //if output only contains null => skip

@@ -16,6 +16,8 @@
 #include <condition_variable>
 #include <deque>
 #include <algorithm>
+#include <sstream>
+#include <vector>
 
 using namespace std;
 
@@ -95,10 +97,12 @@ int main() {
 	case directed:
 		inputFileName = "directors.list"; //input directed
 		outputFileName = "directed.csv"; //output directed
-		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9]){1}" }; //directed koppel
-		//1= director ^.*?(?=\t)
-		//2= movie (\t(.*) \([0-9]){1} //568 steps
-		//3= role such as co-director [0-9]\).*\((.*)\){1}	
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*) (\\([0-9]|\\(\\?{4}\\))", "\\s{2,}\\(([a-zA-Z](.*?)director(.*?)|director)\\)$" };
+		//expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9]){1}" }; //directed koppel
+		//new
+		//1=director (.*\w|.*\w\))\t
+		//2=movie \t(\w.*) (\([0-9]|\(\?{4}\))
+		//3=role \s{2,}\(([a-zA-Z](.*?)director(.*?)|director)\)$
 		break;
 	case directors:
 		inputFileName = "directors.list"; //input directors
@@ -184,7 +188,7 @@ int main() {
 	for (totalLineCount = 0; std::getline(totalLineCountFile, line); ++totalLineCount); //counts total amount of lines
 
 	if (file.is_open()) {
-		string lastActor;
+		string lastActor = "";
 		while (getline(file, line)) { //get nextline from file and store it in line
 			lineCount++;
 
@@ -206,9 +210,24 @@ int main() {
 					output += "NULL" + seperator;
 			}
 
+			if (outputFileName == "directed.csv") {
+				vector<string> v;
+				istringstream buf(output);
+				for (string word; buf >> word; )
+					v.push_back(word);
 
-			//output.substr();
-			//if()
+				if (v[0] == "NULL"+ seperator && lastActor != "") {
+					v[0] = lastActor + seperator;
+
+					output = "";
+					for (auto s : v) {
+						output += s;
+					}
+				}
+				else if (v[0] != "NULL" + seperator) {
+					lastActor = v[0];
+				}
+			}
 
 			//STRING COUNT
 			if (stringCount(output, "NULL") != expressionList.size()) { //if output only contains null => skip

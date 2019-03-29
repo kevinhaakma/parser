@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Gegenereerd op: 27 mrt 2019 om 15:22
+-- Gegenereerd op: 29 mrt 2019 om 11:50
 -- Serverversie: 5.5.60-MariaDB
 -- PHP-versie: 5.6.30
 
@@ -29,9 +29,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Actors` (
-  `actorID` int(11) NOT NULL,
-  `actor` varchar(120) NOT NULL,
-  `gender` tinyint(1) NOT NULL
+  `ActorID` int(11) NOT NULL,
+  `Actor` varchar(120) NOT NULL,
+  `Gender` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -53,10 +53,10 @@ CREATE TABLE `Countries` (
 --
 
 CREATE TABLE `Directed` (
-  `movieID` int(11) NOT NULL,
-  `directorID` int(11) NOT NULL,
-  `role` varchar(120) NOT NULL,
-  `roleID` int(11) NOT NULL
+  `MovieID` int(11) NOT NULL,
+  `DirectorID` int(11) NOT NULL,
+  `Role` varchar(120) NOT NULL,
+  `RoleID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -66,8 +66,8 @@ CREATE TABLE `Directed` (
 --
 
 CREATE TABLE `Directors` (
-  `directorID` int(11) NOT NULL,
-  `name` varchar(120) NOT NULL
+  `DirectorID` int(11) NOT NULL,
+  `Name` varchar(120) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -78,7 +78,7 @@ CREATE TABLE `Directors` (
 
 CREATE TABLE `Genres` (
   `GenreID` int(11) NOT NULL,
-  `genre` varchar(120) NOT NULL,
+  `Genre` varchar(120) NOT NULL,
   `MovieID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -89,10 +89,14 @@ CREATE TABLE `Genres` (
 --
 
 CREATE TABLE `Movies` (
-  `movieID` int(11) NOT NULL,
-  `movie` varchar(120) NOT NULL,
-  `year` int(4) DEFAULT '9999',
-  `studio` varchar(120) NOT NULL
+  `MovieID` int(11) NOT NULL,
+  `Movie` varchar(120) NOT NULL,
+  `Year` int(4) DEFAULT '9999',
+  `Studio` varchar(120) NOT NULL,
+  `SerieName` varchar(120) NOT NULL,
+  `SerieSeason` int(2) NOT NULL,
+  `EpisodeNumber` int(2) NOT NULL,
+  `EndSeason` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -117,10 +121,10 @@ CREATE TABLE `Ratings` (
 --
 
 CREATE TABLE `Roles` (
-  `roleID` int(11) NOT NULL,
-  `actorID` int(11) NOT NULL,
-  `movieID` int(11) NOT NULL,
-  `roles` varchar(120) NOT NULL
+  `RoleID` int(11) NOT NULL,
+  `ActorID` int(11) NOT NULL,
+  `MovieID` int(11) NOT NULL,
+  `Role` varchar(120) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -146,7 +150,7 @@ CREATE TABLE `Soundtracks` (
 -- Indexen voor tabel `Actors`
 --
 ALTER TABLE `Actors`
-  ADD PRIMARY KEY (`actorID`);
+  ADD PRIMARY KEY (`ActorID`);
 
 --
 -- Indexen voor tabel `Countries`
@@ -159,15 +163,15 @@ ALTER TABLE `Countries`
 -- Indexen voor tabel `Directed`
 --
 ALTER TABLE `Directed`
-  ADD PRIMARY KEY (`roleID`),
-  ADD KEY `director` (`directorID`),
-  ADD KEY `movie` (`movieID`);
+  ADD PRIMARY KEY (`RoleID`),
+  ADD KEY `director` (`DirectorID`),
+  ADD KEY `movie` (`MovieID`);
 
 --
 -- Indexen voor tabel `Directors`
 --
 ALTER TABLE `Directors`
-  ADD PRIMARY KEY (`directorID`);
+  ADD PRIMARY KEY (`DirectorID`);
 
 --
 -- Indexen voor tabel `Genres`
@@ -180,7 +184,7 @@ ALTER TABLE `Genres`
 -- Indexen voor tabel `Movies`
 --
 ALTER TABLE `Movies`
-  ADD PRIMARY KEY (`movieID`);
+  ADD PRIMARY KEY (`MovieID`);
 
 --
 -- Indexen voor tabel `Ratings`
@@ -193,9 +197,9 @@ ALTER TABLE `Ratings`
 -- Indexen voor tabel `Roles`
 --
 ALTER TABLE `Roles`
-  ADD PRIMARY KEY (`roleID`),
-  ADD KEY `actor` (`actorID`),
-  ADD KEY `movie` (`movieID`);
+  ADD PRIMARY KEY (`RoleID`),
+  ADD KEY `actor` (`ActorID`),
+  ADD KEY `movie` (`MovieID`);
 
 --
 -- Indexen voor tabel `Soundtracks`
@@ -212,7 +216,7 @@ ALTER TABLE `Soundtracks`
 -- AUTO_INCREMENT voor een tabel `Actors`
 --
 ALTER TABLE `Actors`
-  MODIFY `actorID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ActorID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT voor een tabel `Countries`
@@ -224,13 +228,13 @@ ALTER TABLE `Countries`
 -- AUTO_INCREMENT voor een tabel `Directed`
 --
 ALTER TABLE `Directed`
-  MODIFY `roleID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `RoleID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT voor een tabel `Directors`
 --
 ALTER TABLE `Directors`
-  MODIFY `directorID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `DirectorID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT voor een tabel `Genres`
@@ -242,7 +246,7 @@ ALTER TABLE `Genres`
 -- AUTO_INCREMENT voor een tabel `Movies`
 --
 ALTER TABLE `Movies`
-  MODIFY `movieID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `MovieID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT voor een tabel `Ratings`
@@ -254,7 +258,7 @@ ALTER TABLE `Ratings`
 -- AUTO_INCREMENT voor een tabel `Roles`
 --
 ALTER TABLE `Roles`
-  MODIFY `roleID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `RoleID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT voor een tabel `Soundtracks`
@@ -270,51 +274,51 @@ ALTER TABLE `Soundtracks`
 -- Beperkingen voor tabel `Actors`
 --
 ALTER TABLE `Actors`
-  ADD CONSTRAINT `Actors_ibfk_1` FOREIGN KEY (`actorID`) REFERENCES `Roles` (`actorID`);
+  ADD CONSTRAINT `Actors_ibfk_1` FOREIGN KEY (`ActorID`) REFERENCES `Roles` (`ActorID`);
 
 --
 -- Beperkingen voor tabel `Countries`
 --
 ALTER TABLE `Countries`
-  ADD CONSTRAINT `Countries_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`movieID`);
+  ADD CONSTRAINT `Countries_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`MovieID`);
 
 --
 -- Beperkingen voor tabel `Directed`
 --
 ALTER TABLE `Directed`
-  ADD CONSTRAINT `Directed_ibfk_2` FOREIGN KEY (`movieID`) REFERENCES `Movies` (`movieID`),
-  ADD CONSTRAINT `Directed_ibfk_1` FOREIGN KEY (`directorID`) REFERENCES `Directors` (`directorID`);
+  ADD CONSTRAINT `Directed_ibfk_2` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`MovieID`),
+  ADD CONSTRAINT `Directed_ibfk_1` FOREIGN KEY (`DirectorID`) REFERENCES `Directors` (`DirectorID`);
 
 --
 -- Beperkingen voor tabel `Directors`
 --
 ALTER TABLE `Directors`
-  ADD CONSTRAINT `Directors_ibfk_1` FOREIGN KEY (`directorID`) REFERENCES `Directed` (`directorID`);
+  ADD CONSTRAINT `Directors_ibfk_1` FOREIGN KEY (`DirectorID`) REFERENCES `Directed` (`DirectorID`);
 
 --
 -- Beperkingen voor tabel `Genres`
 --
 ALTER TABLE `Genres`
-  ADD CONSTRAINT `Genres_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`movieID`);
+  ADD CONSTRAINT `Genres_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`MovieID`);
 
 --
 -- Beperkingen voor tabel `Ratings`
 --
 ALTER TABLE `Ratings`
-  ADD CONSTRAINT `Ratings_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`movieID`);
+  ADD CONSTRAINT `Ratings_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`MovieID`);
 
 --
 -- Beperkingen voor tabel `Roles`
 --
 ALTER TABLE `Roles`
-  ADD CONSTRAINT `Roles_ibfk_2` FOREIGN KEY (`movieID`) REFERENCES `Movies` (`movieID`),
-  ADD CONSTRAINT `Roles_ibfk_1` FOREIGN KEY (`actorID`) REFERENCES `Actors` (`actorID`);
+  ADD CONSTRAINT `Roles_ibfk_2` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`MovieID`),
+  ADD CONSTRAINT `Roles_ibfk_1` FOREIGN KEY (`ActorID`) REFERENCES `Actors` (`ActorID`);
 
 --
 -- Beperkingen voor tabel `Soundtracks`
 --
 ALTER TABLE `Soundtracks`
-  ADD CONSTRAINT `Soundtracks_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`movieID`);
+  ADD CONSTRAINT `Soundtracks_ibfk_1` FOREIGN KEY (`MovieID`) REFERENCES `Movies` (`MovieID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

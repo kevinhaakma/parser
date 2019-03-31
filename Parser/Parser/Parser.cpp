@@ -216,7 +216,7 @@ int main() {
 				for (string word; buf >> word; )
 					v.push_back(word);
 
-				if (v[0] == "NULL"+ seperator && lastActor != "") {
+				if (v[0].find("NULL;") != std::string::npos && lastActor != "") {
 					v[0] = lastActor + seperator;
 
 					output = "";
@@ -224,7 +224,7 @@ int main() {
 						output += s;
 					}
 				}
-				else if (v[0] != "NULL" + seperator) {
+				else if (v[0].find("NULL;") == std::string::npos) {
 					lastActor = v[0];
 				}
 			}

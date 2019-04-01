@@ -23,6 +23,7 @@ using namespace std;
 
 string uiOutput(string inputFileName, string outputFileName, int totalLineCount, int lineCount, int percentage);
 size_t stringCount(const std::string& referenceString, const std::string& subString);
+std::vector<std::string> split(std::string strToSplit, char delimeter);
 
 int main() {
 	string inputFileName; //input file name
@@ -30,7 +31,7 @@ int main() {
 
 	string line; //line for record
 	smatch match; //match
-	string seperator = "; "; //string seperator for csv column
+	string seperator = "` "; //string seperator for csv column
 
 	list<string> expressionList; //list expressions
 
@@ -97,12 +98,7 @@ int main() {
 	case directed:
 		inputFileName = "directors.list"; //input directed
 		outputFileName = "directed.csv"; //output directed
-		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*) (\\([0-9]|\\(\\?{4}\\))", "\\s{2,}\\(([a-zA-Z](.*?)director(.*?)|director)\\)$" };
-		//expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9]){1}" }; //directed koppel
-		//new
-		//1=director (.*\w|.*\w\))\t
-		//2=movie \t(\w.*) (\([0-9]|\(\?{4}\))
-		//3=role \s{2,}\(([a-zA-Z](.*?)director(.*?)|director)\)$
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*) (\\([0-9]|\\(\\?{4}\\))", "\\s{2,}\\(([a-zA-Z](.*?)director(.*?)|director)\\)" };
 		break;
 	case directors:
 		inputFileName = "directors.list"; //input directors
@@ -211,20 +207,17 @@ int main() {
 			}
 
 			if (outputFileName == "directed.csv") {
-				vector<string> v;
-				istringstream buf(output);
-				for (string word; buf >> word; )
-					v.push_back(word);
+				vector<string> v = split(output, seperator[0]);
 
-				if (v[0].find("NULL;") != std::string::npos && lastActor != "") {
-					v[0] = lastActor + seperator;
+				if (v[0].find("NULL") != std::string::npos && lastActor != "") {
+					v[0] = lastActor;
 
 					output = "";
 					for (auto s : v) {
-						output += s;
+						output += s + seperator;
 					}
 				}
-				else if (v[0].find("NULL;") == std::string::npos) {
+				else if (v[0].find("NULL") == std::string::npos) {
 					lastActor = v[0];
 				}
 			}
@@ -252,6 +245,20 @@ size_t stringCount(const std::string& referenceString, const std::string& subStr
 		++count;
 	}
 	return count;
+}
+
+//Splits code on delimiter
+std::vector<std::string> split(std::string strToSplit, char delimeter)
+{
+	std::stringstream ss(strToSplit);
+	std::string item;
+	std::vector<std::string> splittedStrings;
+	while (std::getline(ss, item, delimeter))
+	{
+		item.erase(std::remove_if(item.begin(), item.end(), ::isspace), item.end());
+		splittedStrings.push_back(item);
+	}
+	return splittedStrings;
 }
 
 //generates the output for the UI.

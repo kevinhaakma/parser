@@ -31,7 +31,7 @@ int main() {
 
 	string line; //line for record
 	smatch match; //match
-	string seperator = "` "; //string seperator for csv column
+	string seperator = "| "; //string seperator for csv column
 
 	list<string> expressionList; //list expressions
 
@@ -65,7 +65,7 @@ int main() {
 	{
 	case actressesRoles:
 		inputFileName = "actresses.list"; //input actresses
-		outputFileName = "roles.csv"; //output actresses
+		outputFileName = "actressesRoles.csv"; //output actresses
 		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\\]\{1\}" }; //actresses roles koppel
 		//1= ^.*?(?=\t) //actress //748 steps
 		//2= (\t(.*) \([0-9]){1}//movie //3066 steps
@@ -74,14 +74,14 @@ int main() {
 		break;
 	case actresses:
 		inputFileName = "actresses.list"; //input actresses
-		outputFileName = "actors.csv"; //output actresses
-		expressionList = { "^.*?(?=\\t)" }; //actresses
-		//1= actor ^.*?(?=\t)
+		outputFileName = "actressesActors.csv"; //output actresses
+		expressionList = { "^(\\w.*?)\\t" }; //actresses
+		//1= actor ^(\w.*?)\t
 		//to do gender en tabs als null eruit
 		break;
 	case actorsRoles:
 		inputFileName = "actors.list"; //input actors
-		outputFileName = "roles.csv"; //output actors
+		outputFileName = "actorsRoles.csv"; //output actors
 		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\\]\{1\}" }; //actors roles koppel
 		//1= actor ^.*?(?=\\t)
 		//2= movie (\\t(.*) \\([0-9])\{1\}
@@ -90,7 +90,7 @@ int main() {
 		break;
 	case actors:
 		inputFileName = "actors.list"; //input actors
-		outputFileName = "actors.csv"; //output actors
+		outputFileName = "actorsActors.csv"; //output actors
 		expressionList = { "^.*?(?=\\t)" }; //actors
 		//1= actor ^.*?(?=\t)
 		//to do gender en tabs als null eruit
@@ -204,6 +204,13 @@ int main() {
 
 				else
 					output += "NULL" + seperator;
+			}
+
+			if (outputFileName == "actorsActors.csv") {
+				output += "0";
+			}
+			else if (outputFileName == "actressesActors.csv") {
+				output += "1";
 			}
 
 			if (outputFileName == "directed.csv") {

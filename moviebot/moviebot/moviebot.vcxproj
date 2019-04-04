@@ -156,7 +156,6 @@
   <ItemGroup>
     <ClCompile Include="moviebot.cpp" />
     <ClCompile Include="odbcsql.cpp" />
-    <ClCompile Include="Rcpp11_init.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

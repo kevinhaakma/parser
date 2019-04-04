@@ -41,9 +41,6 @@
     <ClCompile Include="odbcsql.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rcpp11_init.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="moviebot.rc">

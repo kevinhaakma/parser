@@ -1,0 +1,43 @@
+Beste Studenten,
+
+ 
+
+Er waren wat problemen met het verbinden met de database. Hiervoor zijn twee oplossingen. De tweede oplossing werkt beter (dan de eerder oplossing die ik jullie heb meegedeeld) en kan ook gebruikt worden i.c.m. Membership.
+
+ 
+
+Het idee is als volgt.
+
+Plaats de connectionstring in je Web.Config file:
+
+    <connectionStrings>
+
+      <add name="TodoDbCntStrng" connectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Todo.mdf;Integrated Security=True" providerName="System.Data.SqlClient"/>
+
+    </connectionStrings>
+
+ 
+
+ 
+
+In je webpages doe je dan het volgende:
+
+    Database db2 = Database.Open("TodoDbCntStrng");
+
+    var records2 = db2.Query("SELECT Id, Name FROM Todo");
+
+ 
+
+Opmerking: het kan zijn dat de bijgevoegde code niet werkt omdat ik een wat nieuwere versie heb van SQL Server LocalDB heb. Als het dus niet werkt. Verwijder dan mijn database (Todo.mdf). En maak een nieuwe aan.
+
+Ik denk dat jullie het idee wel begrijpen.
+
+ 
+
+Happy coding.
+
+ 
+
+Met vriendelijke groet,
+
+Joris

@@ -4,6 +4,9 @@
 #include "stdafx.h"
 #include "moviebot.h"
 //#include <Rcpp.h>
+#include "odbcsql.cpp"
+
+using namespace std;
 
 #define MAX_LOADSTRING 100
 
@@ -27,6 +30,50 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: Place code here.
+
+	//beheer bulk
+	string actor = "INSERT INTO Actor (ActorID, Name, Gender) values (actorid, actorname, 0)";
+	string movie = "INSERT INTO Movies(Movie, Year, Studio, SerieName, SerieSeason, EpisodeNumber, EndSeason) VALUES(movieid, year, studio, serie, season, episode, endseason)";
+	string directors = "INSERT INTO Directors(name) VALUES(director)";
+
+	//selecting id
+	string movieid ="SELECT MovieID FROM Movies WHERE movie = ’some movie name’";
+	string actorid ="SELECT ActorID FROM Actors WHERE actor = ’some actor or actress name’";
+	string directorid ="SELECT DirectorID FROM Directors WHERE director = ’some director name’";
+		
+	//beheer inserts looped
+	string roles = "INSERT INTO Roles(ActorID, MovieID, Role) VALUES(actorid,movieid,role)";
+	string directed = "INSERT INTO Directed(MovieID, DirectorID, Role) VALUES(“1”, “1”, “co - director”)";
+	string countries ="INSERT INTO Countries(Country, MovieID) VALUES(“USA”, “1”)";
+	string genres ="INSERT INTO Genres(Genre, MovieID) VALUES(“Thriller”, “1”)";
+	string soundtracks ="INSERT INTO Soundtracks(Soundtrack, Composer, Performer, Year, movieID) VALUES(“The Godfather”, ”Nino Rota”, ”null”, ”1972”, “1”)";
+	string ratings ="INSERT INTO Ratings(Distribution, Votes, Rank, MovieID, Year) VALUES(“00..001222”, “10039”, “1.1”, ”1”, ”1972”)";
+	   
+	//gebruiker
+	//vraag a2
+	string selector = "SELECT MAX DISTINCT(role) as maxrole FROM roles HAVING maxrole > 1";
+	//vraag a3
+	string selector = "SELECT actors.actor, MIN(movies.year) AS minmov, MAX(movies.year) AS maxmov, maxmo - minmov AS maxrange FROM roles, actors, movies ORDER BY maxrange LIMIT 0, 1";
+	//vraag a13
+	string selector = "SELECT DISINCT(movies.title) AS dismovie FROM roles, actors, movies WHERE roles.movieID = movies.movieID AND roles.actorID = actors.actorID AND actor =’Joop Braakhekke’";
+	//vraag a15
+	string ratingavg = "SELECT AVG(rating) AS ratingavg FROM ratings";
+	string selector = "SELECT actors.actor AS actorname, COUNT(roles.actorID) AS maxbad FROM roles, actors, movies, ratings WHERE roles.movieID = movies.movieID AND roles.actorID = actors.actorID AND ratings.movieID = movies.movieID AND ratings.rating < ‘ratingavg’ ORDER BY maxbad LIMIT 0,1";
+	//vraag a20
+	string selector = "SELECT actors.actor AS actor, COUNT(roles.actorID) AS rolecount FROM roles,actors, movies WHERE roles.movieID = movies.movieID AND roles.actorID = actors.actorID ORDER BY rolecount LIMIT 0,3";
+	//vraag b9
+	string selector = "SELECT actors.actor AS actorname, COUNT(roles.actorID) AS countroles FROM roles, actors, movies, countries WHERE roles.movieID = movies.movieID AND roles.actorID = actors.actorID AND countries.movieID = movies.movieID AND country =’chosencountry’";
+	//vraag b10
+	string selector = "SELECT actors.actor AS actorname, COUNT(roles.actorID) AS countroles FROM roles, actors, movies WHERE roles.movieID = movies.movieID AND roles.actorID = actors.actorID";
+	//vraag c4
+	string selector = "SELECT actors.actor AS actorname, COUNT(roles.actorID) AS countroles, movies.year AS movieyear FROM roles, actors, movies WHERE roles.movieID = movies.movieID AND roles.actorID = actors.actorID AND actors.gender =’1’";
+	//vraag c1
+	string selector = "";
+	//vraag
+	//string selector = "";
+	//vraag
+	//string selector = "";
+
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);

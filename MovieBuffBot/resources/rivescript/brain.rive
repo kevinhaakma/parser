@@ -63,11 +63,11 @@
 + Welke _ acteurs of actrices hebben samen in de meeste films gespeeld? 
 - <call>jdbc localhost 3306 imdb imdb imdb select actors.Actor as actor, count(roles.ActorID) as rolecount from roles,actors,movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID order by rolecount limit 0,<star></call>
 
-//sql van wiebe, wordcloud van
+//sql van wiebe, wordcloud script van
 + Wordcloud * kies een land _
 - <call>jdbc localhost 3306 imdb imdb imdb select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies, countries where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and countries.MovieID = movies.MovieID and Country ='<star>'</call>
-^ <call>system resources/R/wordcloud.R 2&> /dev/null</call>
-^ <call>send photo /tmp/wordcloud.jpg The graph produced by R</call>
+//^ <call>system resources/R/wordcloud.R 2&> /dev/null</call>
+//^ <call>send photo /tmp/wordcloud.jpg The graph produced by R</call>
 
 //sql van wiebe, r script van
 + Maak een visuele weergave van de hoeveelheid acteurs voor een film.

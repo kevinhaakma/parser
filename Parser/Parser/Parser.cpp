@@ -6,6 +6,7 @@
 //Nils Hettinga
 //Groep 10
 
+
 #include "pch.h"
 #include <iostream>
 #include <fstream>
@@ -37,7 +38,7 @@ int main() {
 
 	//enum with output choices
 	enum outputFilename { actressesRoles, actresses, actorsRoles, actors, directed, directors, movies, countries, genres, soundtracks, ratings };
-	list <string> fileNames = {"0: actressesRoles", "1: actresses", "3: actors", "4: directed", "5: directors", "6: movies", "7: countries", "8: genres", "10: ratings"};
+	list <string> fileNames = { "0: actressesRoles", "1: actresses", "3: actors", "4: directed", "5: directors", "6: movies", "7: countries", "8: genres", "10: ratings" };
 	//0 actressesRoles (actor index) (needs to be added to roles)
 	//1 actresses (needs to be added to actors) (gender needs to be added)
 	//2 actorsRoles (actor index)
@@ -55,7 +56,7 @@ int main() {
 	{
 		cout << x << endl;
 	}
-	
+
 
 	cout << "Please enter number: " << endl;
 	cin >> input;
@@ -196,8 +197,12 @@ int main() {
 				cout << uiOutput(inputFileName, outputFileName, totalLineCount, lineCount, percentage);
 			}
 
-			//REGEX
+			//OUTPUT STRING
 			string output = "";
+			//ADD ID NUMBER FOR PRIMARY KEY
+			output = to_string(lineCount) + seperator;
+
+			//REGEX
 			for (auto exp : expressionList) { //foreach expression in expression list => apply expression on line
 				if (regex_search(line, match, regex(exp)) && match.str(1) != "")
 					output += match.str(1) + seperator;

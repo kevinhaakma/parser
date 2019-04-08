@@ -1,0 +1,9 @@
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/actorsActors.csv' 
+
+INTO TABLE `imdb`.`actors`
+
+FIELDS TERMINATED BY ';' 
+
+LINES TERMINATED BY '\n'
+
+IGNORE 1 ROWS;

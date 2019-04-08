@@ -1,0 +1,50 @@
+LOAD DATA INFILE 'C:\Users\wiebe\source\repos\Parser\Parser\actorsActors.csv' 
+
+INTO TABLE actors
+
+FIELDS TERMINATED BY ',' 
+
+ENCLOSED BY '"'
+
+LINES TERMINATED BY '\n'
+
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE 'C:\Users\wiebe\source\repos\Parser\Parser\actressesActors.csv' 
+
+INTO TABLE actors
+
+FIELDS TERMINATED BY ',' 
+
+ENCLOSED BY '"'
+
+LINES TERMINATED BY '\n'
+
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE 'C:\Users\wiebe\source\repos\Parser\Parser\movies.csv' 
+
+INTO TABLE movies
+FIELDS TERMINATED BY ',' 
+
+ENCLOSED BY '"'
+
+LINES TERMINATED BY '\n'
+
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE 'C:\Users\wiebe\source\repos\Parser\Parser\directors.csv' 
+
+INTO TABLE directors
+
+FIELDS TERMINATED BY ',' 
+
+ENCLOSED BY '"'
+
+LINES TERMINATED BY '\n'
+
+IGNORE 1 ROWS;
+
+
+C:\Users\wiebe\Downloads>
+netbeans-8.2-javase-windows.exe --javahome "C:\Program Files\Java\jdk-11.0.2"

@@ -1,4 +1,4 @@
-// Parser.cpp : This file contains the 'main' function. Program execution begins and ends there.
+﻿// Parser.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //Wiebe de Boer
 //Elon Gielink
 //Casper Hooft
@@ -32,7 +32,7 @@ int main() {
 
 	string line; //line for record
 	smatch match; //match
-	string seperator = "| "; //string seperator for csv column
+	string seperator = "; "; //string seperator for csv column
 
 	list<string> expressionList; //list expressions
 
@@ -67,17 +67,22 @@ int main() {
 	case actressesRoles:
 		inputFileName = "actresses.list"; //input actresses
 		outputFileName = "actressesRoles.csv"; //output actresses
-		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\\]\{1\}" }; //actresses roles koppel
-		//1= ^.*?(?=\t) //actress //748 steps
-		//2= (\t(.*) \([0-9]){1}//movie //3066 steps
-		//3= \(([0-9]...)\){1} //year //241 steps
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*|\\\"\\w.*)(\\([0-9]|\\(\\?{4}\\))","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" };
+		//backup first: ^[^\t](\w.*?|.*?)\t als de roles niet correct worden geprint, probeer deze s 😛
+		//1= (.*\w|.*\w\))\t //actress //748 steps
+		//2= \t(\w.*|\"\w.*)(\([0-9]|\(\?{4}\))//movie //3066 steps
+		//3= ([0−9]...)([0-9]...)([0−9]...){1} //year //241 steps
 		//4= \[(.*)\]{1} //role //121 steps
+		//Moet episode naam (of wat t ook maar is) er ook bij? "Please Like Me" (2013) --------->{French Toast (#1.2)}<---------  [$haniqua the Rabbit]  <12>
+		//^^ if so: {(\w.*)\(#\d.\d\)} <- episode name
+		//\(#(\d).						<- season
+		//\(#\d.(\d)\)}					<- episode
 		break;
 	case actresses:
 		inputFileName = "actresses.list"; //input actresses
 		outputFileName = "actressesActors.csv"; //output actresses
-		expressionList = { "^(\\w.*?)\\t" }; //actresses
-		//1= actor ^(\w.*?)\t
+		expressionList = { "(.*\\w|.*\\w\\))\\t" }; //actresses
+		//1= actor (.*\w|.*\w\))\t <- als deze niet werkt pak de oude die hierboven in de comments staat (als die wel werkt)
 		//to do gender en tabs als null eruit
 		break;
 	case actorsRoles:

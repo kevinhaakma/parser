@@ -109,7 +109,7 @@ int main() {
 	case directors:
 		inputFileName = "directors.list"; //input directors
 		outputFileName = "directors.csv"; //output directors
-		expressionList = { "", "","","" }; //directors
+		expressionList = { "(.*\\w|.*\\w\\))\\t" }; //directors
 		//1= director ^.*?(?=\t)
 		//tabs als null eruit
 		break;

@@ -1,0 +1,11 @@
+//ID Selecteren voor de foreign keys voor de latere Post Parsed
+Movieid = SELECT MovieID FROM Movies WHERE movie ='moviename'
+Actorid = SELECT ActorID FROM Actors WHERE actor ='actorname'
+Directorid = SELECT DirectorID FROM Directors WHERE director ='directorname'
+//Inserts Post Parsen CSV to SQL, looped (deze 6 tabellen later) (wel met auto increment primary key)
+INSERT INTO Roles(ActorID,MovieID,Role) VALUES ("1",Movieid, "as himself" ) 
+INSERT INTO Directed(MovieID,DirectorID,Role) VALUES (Movieid, "1","co-director" ) 
+INSERT INTO Countries(Country,MovieID) VALUES ("USA",Movieid ) 
+INSERT INTO Genres(Genre,MovieID) VALUES (“Thriller”, Movieid ) 
+INSERT INTO Soundtracks(Soundtrack,Composer,Performer,Year,movieID) VALUES ("The Godather","Nino Rota","NULL","1972",Movieid ) 
+INSERT INTO Ratings(Distribution,Votes,Rank,MovieID,Year) VALUES ("00..001222","10039", "1.1",Movieid,"1972") 

@@ -35,6 +35,65 @@
 ^ show files\n
 ^ Wat zijn veelgebruikte video formats?
 
+//wiebe beheer FOREIGN KEYS
++ [*] management [*]
+- You can command me:\n
+^\n update countries films
+^\n update genres films
+^\n update ratings films
+^\n update directed films
+^\n update roles films
+^\n update countries series
+^\n update genres series
+^\n update ratings series
+^\n update directed series
+^\n update roles series
+^\n update director
+^\n update actor
+
+//wiebe
+//films
++ update countries films
+- <call>jdbc localhost 3306 imdb imdb imdb update set countries.MovieID = movies.MovieID from countries, movies where countries.Movie = movies.Movie</call>
+
++ update genres films
+- <call>jdbc localhost 3306 imdb imdb imdb update set genres.MovieID = movies.MovieID from genres, movies where genres.Movie = movies.Movie</call>
+
++ update ratings films
+- <call>jdbc localhost 3306 imdb imdb imdb update set ratings.MovieID = movies.MovieID from ratings, movies where ratings.Movie = movies.Movie</call>
+
++ update directed films
+- <call>jdbc localhost 3306 imdb imdb imdb update set directed.MovieID = movies.MovieID from movies, directed where directed.Movie = movies.Movie </call>
+
++ update roles films
+- <call>jdbc localhost 3306 imdb imdb imdb update set roles.MovieID = movies.MovieID from roles, movies where roles.Movie = movies.Movie </call>
+
+//wiebe
+//director en actor
++ update actor
+- <call>jdbc localhost 3306 imdb imdb imdb update set directed.DirectorID = directors.DirectorID from directors, directed where directed.Director = movies.Director </call>
+
++ update director
+- <call>jdbc localhost 3306 imdb imdb imdb update set roles.ActorID = actors.ActorID from actors, roles where actors.Actor = movies.Actor </call>
+
+//wiebe
+//series
++ update countries series
+- <call>jdbc localhost 3306 imdb imdb imdb update set countries.MovieID = movies.MovieID from countries, movies where countries.SerieName = movies.SerieName</call>
+
++ update genres series
+- <call>jdbc localhost 3306 imdb imdb imdb update set genres.MovieID = movies.MovieID from genres, movies where genres.SerieName = movies.SerieName</call>
+
++ update ratings series
+- <call>jdbc localhost 3306 imdb imdb imdb update set ratings.MovieID = movies.MovieID from ratings, movies where ratings.SerieName = movies.SerieName</call>
+
++ update directed series
+- <call>jdbc localhost 3306 imdb imdb imdb update set directed.MovieID = movies.MovieID from movies, directed where directed.SerieName = movies.SerieName </call>
+
++ update roles series
+- <call>jdbc localhost 3306 imdb imdb imdb update set roles.MovieID = movies.MovieID from roles, movies where roles.SerieName = movies.SerieName </call>
+
+
 + *
 - Niet zeker of ik dat begrepen heb. Type /help voor voorbeeldvragen.
 
@@ -123,4 +182,4 @@
 ! sub what're = what are
 ! sub what've = what have
 ! sub what'll = what will
-! sub who's   = who is
+! sub who's = who is

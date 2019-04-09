@@ -223,7 +223,7 @@ int main() {
 				output += "1";
 			}
 
-			if (outputFileName == "directed.csv") {
+			if (outputFileName == "directed.csv" | outputFileName == "actressesRoles.csv") {
 				vector<string> v = split(output, seperator[0]);
 
 				if (v[0].find("NULL") != std::string::npos && lastActor != "") {

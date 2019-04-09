@@ -205,7 +205,7 @@ int main() {
 			//OUTPUT STRING
 			string output = "";
 			//ADD ID NUMBER FOR PRIMARY KEY
-			output = to_string(lineCount) + seperator;
+			//output = to_string(lineCount) + seperator;
 
 			//REGEX
 			for (auto exp : expressionList) { //foreach expression in expression list => apply expression on line

@@ -160,15 +160,15 @@ int main() {
 	case ratings:
 		inputFileName = "ratings.list"; //input ratings
 		outputFileName = "ratings.csv"; //output ratings
-		expressionList = { "([\\d|\\.]{10})","[\\s](\\d[0-9]{0,7})[\\s]","[\\s]([\\d+\\.+\\d]{3})[\\s]","\"(.*)\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d).","\\(#\\d.(\\d)." }; //ratings
-		//1=distribution ([\\d|\\.]{10})
-		//2=votes [\\s](\\d[0-9]{0,7})[\\s]
-		//3=ratings [\\s]([\\d+\\.+\\d]{3})[\\s]
-		//4=title \"(.*)\""
-		//5=year "\\((\\d{4})\\)
-		//6=serie title \\{(.*)\\(
-		//7=season \\(#(\\d).
-		//8=episode \\(#\\d.(\\d).
+		expressionList = { "([\\d|\\.]{10})","[\\s](\\d[0-9]{0,7})[\\s]","\\d\\s{3}(\\d+\\.\\d)","\\d\\s{2}(\\\".*?|\\w.*?)\\(","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d)\\.","\\(#\\d.(\\d{1,10})" }; //ratings
+		//1=distribution ([\d|\.]{10})
+		//2=votes [\s](\d[0-9]{0,7})[\s]
+		//3=ratings \d\s{3}(\d+\.\d)
+		//4=title \d\s{2}(\".*?|\w.*?)\(
+		//5=year \((\d{4})\)
+		//6=serie title \{(.*)\(
+		//7=season \(#(\d)\.
+		//8=episode \(#\d.(\d{1,10})
 		break;
 	default:
 		//default do nothing here

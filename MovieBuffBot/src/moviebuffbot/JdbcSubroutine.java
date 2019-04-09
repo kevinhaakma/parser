@@ -1,7 +1,7 @@
 package moviebuffbot;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
+import com.mysql.cj.jdbc.JdbcConnection;
+import com.mysql.cj.jdbc.JdbcStatement;
 import com.rivescript.macro.Subroutine;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -26,15 +26,15 @@ public class JdbcSubroutine implements Subroutine {
             sql = sql + " " + args[i];
         sql = sql.trim();
 
-        Connection connection = null;
-        Statement statement = null;
+        JdbcConnection connection = null;
+        JdbcStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-            connection=(Connection) DriverManager.getConnection(
-                    "jdbc:mysql://" + host + ":" + port + "/" + db + "?autoReconnect=true&useSSL=false",
+            connection=(JdbcConnection) DriverManager.getConnection(
+                    "jdbc:mysql://" + host + ":" + port + "/" + db + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
                     username, password);
-            statement=(Statement) connection.createStatement();
+            statement=(JdbcStatement) connection.createStatement();
             resultSet=statement.executeQuery(sql);
             while(resultSet.next()) {
                 int i = resultSet.getMetaData().getColumnCount();
@@ -49,12 +49,14 @@ public class JdbcSubroutine implements Subroutine {
                     result += "\n";
             }
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         } finally{
             try {
                 resultSet.close();
                 statement.close();
                 connection.close();
             } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
             }
         }
         

@@ -3,6 +3,8 @@
 # install.packages("RMySQL")
 library(RMySQL)
 
+#wiebe R
+
 # Install
 #install.packages("tm")  # for text mining
 #install.packages("SnowballC") # for text stemming
@@ -53,8 +55,3 @@ set.seed(1234)
 wordcloud(words = d$word, freq = d$freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"))
-
-#invisible(jpeg('/tmp/video-format.jpg'))
-#barplot(values$freq, names.arg = values$format, horiz=FALSE, cex.names=0.5)
-#invisible(dev.off())
-

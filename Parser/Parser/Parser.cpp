@@ -116,12 +116,12 @@ int main() {
 	case movies:
 		inputFileName = "movies.list"; //input movies
 		outputFileName = "movies.csv"; //output movies
-		expressionList = { "\"(.*)\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\t(\\d{4}|\\d{4}\\-.*)$" }; //movies
-		//1= movieName \"(.*)\"
-		//2= year \\((\\d{4})\\)
-		//3= serieName \\{(.*)\\(
-		//4= serieSeason \\(#(\\d{1,10}).
-		//5= episode number .(\\d{1,10})\\)\\\}
+		expressionList = { "^\\\"(.*?)\\\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\t(\\d{4}|\\d{4}\\-.*)$" }; //movies
+		//1= movieName ^\"(.*?)\"
+		//2= year \((\d{4})\)
+		//3= serieName \{(.*)\(
+		//4= serieSeason \(#(\d{1,10}).
+		//5= episode number .(\d{1,10})\)}
 		//6= end season \t(\d{4}|\d{4}\-.*)$
 		break;
 	case countries:

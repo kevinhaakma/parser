@@ -262,3 +262,5 @@ __pycache__/
 /Parser/Parser/actressesRoles.csv
 *.csv
 *.list
+/Parser/Parser/actresses.list.gz
+/Parser/Parser/actors.list.gz

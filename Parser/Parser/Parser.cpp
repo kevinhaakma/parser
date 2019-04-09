@@ -73,10 +73,10 @@ int main() {
 		//2= \t(\w.*|\"\w.*)(\([0-9]|\(\?{4}\))//movie //3066 steps
 		//3= ([0−9]...)([0-9]...)([0−9]...){1} //year //241 steps
 		//4= \[(.*)\]{1} //role //121 steps
-		//Moet episode naam (of wat t ook maar is) er ook bij? "Please Like Me" (2013) --------->{French Toast (#1.2)}<---------  [$haniqua the Rabbit]  <12>
+		//Moet episode naam (of wat t ook maar is) er ook bij? "Please Like Me" (2013) --------->{French Toast (#1.2)}<--------- [$haniqua the Rabbit] <12>
 		//^^ if so: {(\w.*)\(#\d.\d\)} <- episode name
-		//\(#(\d).						<- season
-		//\(#\d.(\d)\)}					<- episode
+		//\(#(\d). <- season
+		//\(#\d.(\d)\)} <- episode
 		break;
 	case actresses:
 		inputFileName = "actresses.list"; //input actresses
@@ -88,7 +88,7 @@ int main() {
 	case actorsRoles:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "actorsRoles.csv"; //output actors
-		expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\\]\{1\}" }; //actors roles koppel
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*|\\\"\\w.*)(\\([0-9]|\\(\\?{4}\\))","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" }; //actors roles koppel
 		//1= actor ^.*?(?=\\t)
 		//2= movie (\\t(.*) \\([0-9])\{1\}
 		//3= year \\(([0-9]...)\\)\{1\}
@@ -97,7 +97,7 @@ int main() {
 	case actors:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "actorsActors.csv"; //output actors
-		expressionList = { "^.*?(?=\\t)" }; //actors
+		expressionList = { "(.*\\w|.*\\w\\))\\t" }; //actors
 		//1= actor ^.*?(?=\t)
 		//to do gender en tabs als null eruit
 		break;

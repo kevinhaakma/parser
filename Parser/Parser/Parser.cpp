@@ -88,7 +88,7 @@ int main() {
 	case actorsRoles:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "actorsRoles.csv"; //output actors
-		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*|\\\"\\w.*)(\\([0-9]|\\(\\?{4}\\))","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" }; //actors roles koppel
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" }; //actors roles koppel
 		//1= actor ^.*?(?=\\t)
 		//2= movie (\\t(.*) \\([0-9])\{1\}
 		//3= year \\(([0-9]...)\\)\{1\}

@@ -67,7 +67,7 @@ int main() {
 	case actressesRoles:
 		inputFileName = "actresses.list"; //input actresses
 		outputFileName = "actressesRoles.csv"; //output actresses
-		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*|\\\"\\w.*)(\\([0-9]|\\(\\?{4}\\))","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" };
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*?)\\s\\([0-9]{4}","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" };
 		//backup first: ^[^\t](\w.*?|.*?)\t als de roles niet correct worden geprint, probeer deze s 😛
 		//1= (.*\w|.*\w\))\t //actress //748 steps
 		//2= \t(\w.*|\"\w.*)(\([0-9]|\(\?{4}\))//movie //3066 steps
@@ -272,7 +272,7 @@ std::vector<std::string> split(std::string strToSplit, char delimeter)
 	std::vector<std::string> splittedStrings;
 	while (std::getline(ss, item, delimeter))
 	{
-		item.erase(std::remove_if(item.begin(), item.end(), ::isspace), item.end());
+		//item.erase(std::remove_if(item.begin(), item.end(), ::isspace), item.end());
 		splittedStrings.push_back(item);
 	}
 	return splittedStrings;

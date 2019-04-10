@@ -32,13 +32,13 @@ int main() {
 
 	string line; //line for record
 	smatch match; //match
-	string seperator = "; "; //string seperator for csv column
+	string seperator = "|"; //string seperator for csv column
 
 	list<string> expressionList; //list expressions
 
 	//enum with output choices
 	enum outputFilename { actressesRoles, actresses, actorsRoles, actors, directed, directors, movies, countries, genres, soundtracks, ratings };
-	list <string> fileNames = { "0: actressesRoles", "1: actresses", "3: actors", "4: directed", "5: directors", "6: movies", "7: countries", "8: genres", "10: ratings" };
+	list <string> fileNames = { "0: actressesRoles", "1: actresses", "2: actorsRoles", "3: actors", "4: directed", "5: directors", "6: movies", "7: countries", "8: genres", "10: ratings" };
 	//0 actressesRoles (actor index) (needs to be added to roles)
 	//1 actresses (needs to be added to actors) (gender needs to be added)
 	//2 actorsRoles (actor index)
@@ -67,28 +67,37 @@ int main() {
 	case actressesRoles:
 		inputFileName = "actresses.list"; //input actresses
 		outputFileName = "actressesRoles.csv"; //output actresses
-		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*?)\\s\\([0-9]{4}","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" };
-		//backup first: ^[^\t](\w.*?|.*?)\t als de roles niet correct worden geprint, probeer deze s 😛
+		//expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*|\\\"\\w.*)(\\([0-9]|\\(\\?{4}\\))","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" };
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}", "\\(([0-9]...)\\){1}", "\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\t(\\d{4}|\\d{4}\\-.*)$" };
+		//backup first: ^[^\t](\w.*?|.*?)\t als de roles niet correct worden geprint, probeer deze s
 		//1= (.*\w|.*\w\))\t //actress //748 steps
 		//2= \t(\w.*|\"\w.*)(\([0-9]|\(\?{4}\))//movie //3066 steps
 		//3= ([0−9]...)([0-9]...)([0−9]...){1} //year //241 steps
 		//4= \[(.*)\]{1} //role //121 steps
-		//Moet episode naam (of wat t ook maar is) er ook bij? "Please Like Me" (2013) --------->{French Toast (#1.2)}<--------- [$haniqua the Rabbit] <12>
-		//^^ if so: {(\w.*)\(#\d.\d\)} <- episode name
-		//\(#(\d). <- season
-		//\(#\d.(\d)\)} <- episode
 		break;
 	case actresses:
 		inputFileName = "actresses.list"; //input actresses
 		outputFileName = "actressesActors.csv"; //output actresses
-		expressionList = { "(.*\\w|.*\\w\\))\\t" }; //actresses
-		//1= actor (.*\w|.*\w\))\t <- als deze niet werkt pak de oude die hierboven in de comments staat (als die wel werkt)
+		expressionList = { "^(\\w.*?)\\t" }; //actresses
+		//1= actor ^(\w.*?)\t
 		//to do gender en tabs als null eruit
 		break;
 	case actorsRoles:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "actorsRoles.csv"; //output actors
-		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" }; //actors roles koppel
+		//expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\\]\{1\}" }; //actors roles koppel
+		//expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\\]\{1\}" }; //actors roles koppel
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}", "\\(([0-9]...)\\){1}", "\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\t(\\d{4}|\\d{4}\\-.*)$" };
+		
+		//expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(.*)\{1\}\\s\\([0-9]", "\\((\\d{4})\\)", "\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\t(\\d{4}|\\d{4}\\-.*)$" }; //actors roles koppel
+		//1 actor = "(.*\\w|.*\\w\\))\\t"
+		//2 movie = "\\t((\\\"|\\w).*)\\s\\([0-9]{4}"
+		//3 year = "\\((\\d{4})\\)"
+		//4 serie = "\\{(.*)\\(","\\(#(\\d{1,10})."
+		//5 season = ".(\\d{1,10})\\)\\\}"
+		//6 episode = "\\t(\\d{4}|\\d{4}\\-.*)$"
+		//7 role = "\\[(.*)\\]{1}"
+																																														   
 		//1= actor ^.*?(?=\\t)
 		//2= movie (\\t(.*) \\([0-9])\{1\}
 		//3= year \\(([0-9]...)\\)\{1\}
@@ -97,10 +106,17 @@ int main() {
 	case actors:
 		inputFileName = "actors.list"; //input actors
 		outputFileName = "actorsActors.csv"; //output actors
-		expressionList = { "(.*\\w|.*\\w\\))\\t" }; //actors
+		expressionList = { "^(\\w.*?)\\t" }; //actors
 		//1= actor ^.*?(?=\t)
 		//to do gender en tabs als null eruit
 		break;
+		/*
+	case directed:
+		inputFileName = "directors.list"; //input directed
+		outputFileName = "directed.csv"; //output directed
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*) (\\([0-9]|\\(\\?{4}\\))", "\\s{2,}\\(([a-zA-Z](.*?)director(.*?)|director)\\)" };
+		break;
+		*/
 	case directed:
 		inputFileName = "directors.list"; //input directed
 		outputFileName = "directed.csv"; //output directed
@@ -109,10 +125,23 @@ int main() {
 	case directors:
 		inputFileName = "directors.list"; //input directors
 		outputFileName = "directors.csv"; //output directors
-		expressionList = { "(.*\\w|.*\\w\\))\\t" }; //directors
+		expressionList = { "^(\\w.*?)\\t" }; //directors
 		//1= director ^.*?(?=\t)
 		//tabs als null eruit
 		break;
+		/*
+	case movies:
+		inputFileName = "movies.list"; //input movies
+		outputFileName = "movies.csv"; //output movies
+		expressionList = { "\"(.*)\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d{1,2}).",".(\\d{1,2})\\)\\\}","\\s((\\d{4}\-(\\d{4}|\\?{4})|(\\d{4})))" }; //movies
+		//1= movieName \"(.*)\"
+		//2= year \\((\\d{4})\\)
+		//3= serieName \\{(.*)\\(
+		//4= serieSeason \\(#(\\d{1,2}).
+		//5= episode number .(\\d{1,2})\\)\\\}
+		//6= end season \\s((\\d{4}\-(\\d{4}|\\?{4})|(\\d{4})))
+		break;
+		*/
 	case movies:
 		inputFileName = "movies.list"; //input movies
 		outputFileName = "movies.csv"; //output movies
@@ -124,6 +153,19 @@ int main() {
 		//5= episode number .(\d{1,10})\)}
 		//6= end season \t(\d{4}|\d{4}\-.*)$
 		break;
+		/*
+	case movies:
+		inputFileName = "movies.list"; //input movies
+		outputFileName = "movies.csv"; //output movies
+		expressionList = { "\"(.*)\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\t(\\d{4}|\\d{4}\\-.*)$" }; //movies
+		//1= movieName \"(.*)\"
+		//2= year \\((\\d{4})\\)
+		//3= serieName \\{(.*)\\(
+		//4= serieSeason \\(#(\\d{1,10}).
+		//5= episode number .(\\d{1,10})\\)\\\}
+		//6= end season \t(\d{4}|\d{4}\-.*)$
+		break;
+		*/
 	case countries:
 		inputFileName = "countries.list"; //input countries
 		outputFileName = "countries.csv"; //output countries
@@ -135,6 +177,19 @@ int main() {
 		//5=	episode = \(#\d.(\d).
 		//6=	country = \s(\w + -+\w + | \w + )$
 		break;
+		/*
+	case countries:
+		inputFileName = "countries.list"; //input countries
+		outputFileName = "countries.csv"; //output countries
+		expressionList = { "^\"(.*?)\"", "\\((\\d{4})\\)", "\\{(.*)\\(#", "\\(#(\\d).", "\\(#\\d.(\\d).", "\\s(\\w+-+\\w+|\\w+)$" }; //countries
+		//1= movie title = ^"(.*?)"
+		//2=	jaar = \((\d{ 4 })\)
+		//3=	episodenaam = { (.*)\(#
+		//4=	season = \(#(\d).
+		//5=	episode = \(#\d.(\d).
+		//6=	country = \s(\w + -+\w + | \w + )$
+		break;
+		*/
 	case genres:
 		inputFileName = "genres.list"; //input genres
 		outputFileName = "genres.csv"; //output genres
@@ -160,16 +215,31 @@ int main() {
 	case ratings:
 		inputFileName = "ratings.list"; //input ratings
 		outputFileName = "ratings.csv"; //output ratings
-		expressionList = { "([\\d|\\.]{10})","[\\s](\\d[0-9]{0,7})[\\s]","\\d\\s{3}(\\d+\\.\\d)","\\d\\.\\d\\s{2}(\\\".*?|\\w.*?|\\[.*?)\\(","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d)\\.","\\(#\\d.(\\d{1,10})" }; //ratings
+		expressionList = { "([\\d|\\.]{10})","[\\s](\\d[0-9]{0,7})[\\s]","\\d\\s{3}(\\d+\\.\\d)","\\d\\.\\d\\s{2}(\\\".*?|\\w.*?)\\(","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d)\\.","\\(#\\d.(\\d{1,10})" }; //ratings
 		//1=distribution ([\d|\.]{10})
 		//2=votes [\s](\d[0-9]{0,7})[\s]
 		//3=ratings \d\s{3}(\d+\.\d)
-		//4=title \d\.\d\s{2}(\".*?|\w.*?|\[.*?)\(
+		//4=title \d\.\d\s{2}(\".*?|\w.*?)\(
 		//5=year \((\d{4})\)
 		//6=serie title \{(.*)\(
 		//7=season \(#(\d)\.
 		//8=episode \(#\d.(\d{1,10})
 		break;
+		/*
+	case ratings:
+		inputFileName = "ratings.list"; //input ratings
+		outputFileName = "ratings.csv"; //output ratings
+		expressionList = { "([\\d|\\.]{10})","[\\s](\\d[0-9]{0,7})[\\s]","[\\s]([\\d+\\.+\\d]{3})[\\s]","\"(.*)\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d).","\\(#\\d.(\\d)." }; //ratings
+		//1=distribution ([\\d|\\.]{10})
+		//2=votes [\\s](\\d[0-9]{0,7})[\\s]
+		//3=ratings [\\s]([\\d+\\.+\\d]{3})[\\s]
+		//4=title \"(.*)\""
+		//5=year "\\((\\d{4})\\)
+		//6=serie title \\{(.*)\\(
+		//7=season \\(#(\\d).
+		//8=episode \\(#\\d.(\\d).
+		break;
+		*/
 	default:
 		//default do nothing here
 		inputFileName = "input.list"; //input list file
@@ -185,6 +255,13 @@ int main() {
 
 	//main
 	int lineCount = 0;
+	if (outputFileName == "actressesActors.csv") {
+		lineCount = 20152659;
+	}
+	else {
+		lineCount = 0;
+	}
+	
 	int totalLineCount = 0;
 	int lastPercentage = 0;
 	for (totalLineCount = 0; std::getline(totalLineCountFile, line); ++totalLineCount); //counts total amount of lines
@@ -213,7 +290,7 @@ int main() {
 					output += match.str(1) + seperator;
 
 				else
-					output += "NULL" + seperator;
+					output += "0" + seperator;
 			}
 
 			if (outputFileName == "actorsActors.csv") {
@@ -222,8 +299,7 @@ int main() {
 			else if (outputFileName == "actressesActors.csv") {
 				output += "1";
 			}
-
-			if (outputFileName == "actressesRoles.csv" | outputFileName == "actressesActors.csv" | outputFileName == "actorsRoles.csv" | outputFileName == "actorsActors.csv" | outputFileName == "directors.csv" | outputFileName == "directed.csv") {
+			else if (outputFileName == "directed.csv") {
 				vector<string> v = split(output, seperator[0]);
 
 				if (v[0].find("NULL") != std::string::npos && lastActor != "") {
@@ -272,7 +348,7 @@ std::vector<std::string> split(std::string strToSplit, char delimeter)
 	std::vector<std::string> splittedStrings;
 	while (std::getline(ss, item, delimeter))
 	{
-		//item.erase(std::remove_if(item.begin(), item.end(), ::isspace), item.end());
+		item.erase(std::remove_if(item.begin(), item.end(), ::isspace), item.end());
 		splittedStrings.push_back(item);
 	}
 	return splittedStrings;

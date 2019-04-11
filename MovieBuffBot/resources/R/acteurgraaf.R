@@ -4,7 +4,7 @@
 library(RMySQL)
 
 #wiebe R
-con <- dbConnect(MySQL(), dbname="imdb", user="imdb", password="imdb")
+con <- dbConnect(MySQL(), dbname="imdb", user="root", password="sql080")
 values <- dbGetQuery(con, "select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID")
 
 invisible(jpeg('/tmp/movieroles.jpg'))

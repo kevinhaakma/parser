@@ -16,8 +16,8 @@ library("SnowballC")
 library("wordcloud")
 library("RColorBrewer")
 
-con <- dbConnect(MySQL(), dbname="imdb", user="imdb", password="imdb")
-values <- dbGetQuery(con, "jdbc localhost 3306 imdb imdb imdb select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies, countries where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and countries.MovieID = movies.MovieID and Country ='<star>'")
+con <- dbConnect(MySQL(), dbname="imdb", user="root", password="sql080")
+values <- dbGetQuery(con, "select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies, countries where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and countries.MovieID = movies.MovieID and Country ='<star>'")
 
 # Load the data as a corpus
 docs <- Corpus(VectorSource(values))

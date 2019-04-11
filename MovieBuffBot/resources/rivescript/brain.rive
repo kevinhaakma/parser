@@ -106,9 +106,9 @@
 - De datum is not workign
 
 //kevin
-+ testw
-- <call>system rscript resources/R/wordcloud.R</call>
-^ <call>send photo /temp/wordcloud.jpg The graph produced by R</call>
++ wordcloud *
+- <call>system rscript resources/R/wordcloud.R <star></call>
+^ <call>send photo c:/temp/output.jpg The graph produced by R</call>
 
 //kevin
 + testsql

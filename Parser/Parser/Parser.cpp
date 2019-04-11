@@ -41,7 +41,7 @@ int main() {
 	list <string> fileNames = { "0: actressesRoles", "1: actresses", "2: actorsRoles", "3: actors", "4: directed", "5: directors", "6: movies", "7: countries", "8: genres", "10: ratings" };
 	//0 actressesRoles (actor index) (needs to be added to roles) //Casper, Elon, 
 	//1 actresses (needs to be added to actors) (gender needs to be added) //Wiebe, Elon, Casper, Kevin
-	//2 actorsRoles (actor index) //Wiebe, Kevin, Elon
+	//2 actorsRoles (actor index) //Wiebe, Kevin, Elon, Casper
 	//3 actors * (gender needs to be added) //Kevin, Elon
 	//4 directed * (director index) //Casper, Elon
 	//5 directors * //Casper, Wiebe, Elon
@@ -69,7 +69,8 @@ int main() {
 		outputFileName = "actressesRoles.csv"; //output actresses
 		//expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*|\\\"\\w.*)(\\([0-9]|\\(\\?{4}\\))","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" };\[(.*){1}\]
 		//expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}", "\\(([0-9]...)\\){1}", "\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\[(.*){1}\\]" };
-		expressionList = { "(.*\\w'|.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}", "\\(([0-9]...)\\){1}", "\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\[(.*)\{1\}\\]" };
+		//THIS ONE HAS NO 7TH COLUMexpressionList = { "(.*\\w'|.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}", "\\((\\w{4})(\\) | \\ \/ )", "\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}" };
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}", "\\((\\d{4})\\)", "\\\{(.*)\\(#","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}", "\\[(.*)\\]" };
 		//backup first: ^[^\t](\w.*?|.*?)\t als de roles niet correct worden geprint, probeer deze s
 		//1= (.*\w|.*\w\))\t //actress //748 steps
 		//(.*\w'|.*\w|.*\w\))\t
@@ -91,7 +92,7 @@ int main() {
 		//expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\\]\{1\}" }; //actors roles koppel
 		//expressionList = { "^.*?(?=\\t)", "(\\t(.*) \\([0-9])\{1\}","\\(([0-9]...)\\)\{1\}","\\[(.*)\\]\{1\}" }; //actors roles koppel
 		//expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}", "\\(([0-9]...)\\){1}", "\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\t(\\d{4}|\\d{4}\\-.*)$" };
-		expressionList = { "(.*\\w'|.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}", "\\((\\w{4})(\\) | \\ \/ )", "\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\[(.*)\{1\}\\]" };
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}", "\\((\\d{4})\\)", "\\\{(.*)\\(#","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}", "\\[(.*)\\]" };
 		//expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(.*)\{1\}\\s\\([0-9]", "\\((\\d{4})\\)", "\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\t(\\d{4}|\\d{4}\\-.*)$" }; //actors roles koppel
 		//1 actor = "(.*\\w|.*\\w\\))\\t"
 		//2 movie = "\\t((\\\"|\\w).*)\\s\\([0-9]{4}"

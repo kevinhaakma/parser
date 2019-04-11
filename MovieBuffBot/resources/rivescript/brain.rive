@@ -1,5 +1,6 @@
 // brain.rive
 
+//STARTUP
 + (hello|hi|hoi|hey|goeie|goedemorgen|goedendag|goedemiddag|goedenavond|goedenacht|goeiendag|gedag|dag|agoeie|salut|pannenkoek)
 - Hi there!
 - hello
@@ -17,6 +18,7 @@
 + [*] start [*]
 - Ik ben de Movie Chat bot! Stel me vragen over je favoriete film. Type /help voor voorbeeld vragen.
 
+//HELP
 //wiebe
 + [*] help [*]
 - You can ask me questions like:\n
@@ -35,6 +37,65 @@
 ^ show files\n
 ^ Wat zijn veelgebruikte video formats?
 
+//wiebe beheer FOREIGN KEYS ID
++ [*] management [*]
+- You can command me:\n
+^\n update countries films
+^\n update genres films
+^\n update ratings films
+^\n update directed films
+^\n update roles films
+^\n update countries series
+^\n update genres series
+^\n update ratings series
+^\n update directed series
+^\n update roles series
+^\n update director
+^\n update actor
+
+//wiebe
+//films
++ update countries films
+- <call>jdbc localhost 3306 imdb root sql080 update set countries.MovieID = movies.MovieID from countries, movies where countries.Movie = movies.Movie</call>
+
++ update genres films
+- <call>jdbc localhost 3306 imdb root sql080 update set genres.MovieID = movies.MovieID from genres, movies where genres.Movie = movies.Movie</call>
+
++ update ratings films
+- <call>jdbc localhost 3306 imdb root sql080 update set ratings.MovieID = movies.MovieID from ratings, movies where ratings.Movie = movies.Movie</call>
+
++ update directed films
+- <call>jdbc localhost 3306 imdb root sql080 update set directed.MovieID = movies.MovieID from movies, directed where directed.Movie = movies.Movie </call>
+
++ update roles films
+- <call>jdbc localhost 3306 imdb root sql080 update set roles.MovieID = movies.MovieID from roles, movies where roles.Movie = movies.Movie </call>
+
+//wiebe
+//director en actor
++ update actor
+- <call>jdbc localhost 3306 imdb root sql080 update set directed.DirectorID = directors.DirectorID from directors, directed where directed.Director = movies.Director </call>
+
++ update director
+- <call>jdbc localhost 3306 imdb root sql080 update set roles.ActorID = actors.ActorID from actors, roles where actors.Actor = movies.Actor </call>
+
+//wiebe
+//series
++ update countries series
+- <call>jdbc localhost 3306 imdb root sql080 update set countries.MovieID = movies.MovieID from countries, movies where countries.SerieName = movies.SerieName</call>
+
++ update genres series
+- <call>jdbc localhost 3306 imdb root sql080 update set genres.MovieID = movies.MovieID from genres, movies where genres.SerieName = movies.SerieName</call>
+
++ update ratings series
+- <call>jdbc localhost 3306 imdb root sql080 update set ratings.MovieID = movies.MovieID from ratings, movies where ratings.SerieName = movies.SerieName</call>
+
++ update directed series
+- <call>jdbc localhost 3306 imdb root sql080 update set directed.MovieID = movies.MovieID from movies, directed where directed.SerieName = movies.SerieName </call>
+
++ update roles series
+- <call>jdbc localhost 3306 imdb root sql080 update set roles.MovieID = movies.MovieID from roles, movies where roles.SerieName = movies.SerieName </call>
+
+//ALGEMEEN
 + *
 - Niet zeker of ik dat begrepen heb. Type /help voor voorbeeldvragen.
 
@@ -43,10 +104,6 @@
 
 + (wat is de datum?|date|vandaag|dag|week|maand)
 - De datum is not workign
-
-//wiebe
-+ welke acteur heeft de meeste dubbelrollen?
-- <call>jdbc localhost 3306 imdb root kevinhaakma select max distinct(role) as maxrole from roles having maxrole >1</call>
 
 //kevin
 + testw
@@ -72,11 +129,11 @@
 
 //wiebe
 + welke acteur heeft de langste filmcarriere?
-- <call>jdbc localhost 3306 imdb root kevinhaakma select actors.Actor, min(movies.Year) as minmov, max(movies.Year) as maxmov, maxmo - minmov as maxrange from roles, actors, movies order by maxrange limit 0,1</call>
+- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor, min(movies.Year) as minmov, max(movies.Year) as maxmov, maxmo - minmov as maxrange from roles, actors, movies order by maxrange limit 0,1</call>
 
 //wiebe
 + in welke films speelde _ *
-- <call>jdbc localhost 3306 imdb imdb imdb select dictinct(movies.Title) as dismovie from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and Actor like ='<star>'</call>
+- <call>jdbc localhost 3306 imdb root sql080 select dictinct(movies.Title) as dismovie from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and Actor like ='<star>'</call>
 
 //wiebe
 + wat is de gemiddelde waardering van films?
@@ -84,48 +141,42 @@
 
 //wiebe
 + welke acteur of actrice speelt het meest in de slechtst gewaardeerde * _ gemiddelde.
-- <call>jdbc localhost 3306 imdb imdb imdb select actors.Actor as actorname, count(roles.ActorID) as maxbad from roles, actors, movies, ratings where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and ratings.MovieID = movies.MovieID and ratings.Rating < '<star>' order by maxbad LIMIT 0,1</call>
+- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actorname, count(roles.ActorID) as maxbad from roles, actors, movies, ratings where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and ratings.MovieID = movies.MovieID and ratings.Rating < '<star>' order by maxbad LIMIT 0,1</call>
 
 //wiebe
 + welke _ acteurs of actrices hebben samen in de meeste films gespeeld?
-- <call>jdbc localhost 3306 imdb imdb imdb select actors.Actor as actor, count(roles.ActorID) as rolecount from roles,actors,movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID order by rolecount limit 0,<star></call>
+- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actor, count(roles.ActorID) as rolecount from roles,actors,movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID order by rolecount limit 0,<star></call>
 
+//VISUALISATIES en R
 //sql van wiebe, wordcloud script van
 + wordcloud * kies een land _
-- <call>jdbc localhost 3306 imdb imdb imdb select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies, countries where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and countries.MovieID = movies.MovieID and Country ='<star>'</call>
-//^ <call>system resources/R/wordcloud.R 2&> /dev/null</call>
-//^ <call>send photo /tmp/wordcloud.jpg The graph produced by R</call>
+- There it is!
+//- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies, countries where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and countries.MovieID = movies.MovieID and Country ='<star>'</call>
+^ <call>system resources/R/wordcloud.R 2&> /dev/null</call>
+^ <call>send photo /tmp/wordcloud.jpg The graph produced by R</call>
 
 //sql van wiebe, r script van
 + maak een visuele weergave van de hoeveelheid acteurs voor een film.
-- <call>jdbc localhost 3306 imdb imdb imdb select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID</call>
+- There it is!
+//- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID</call>
 ^ <call>system resources/R/acteurgraaf.R 2&> /dev/null</call>
 ^ <call>send photo /tmp/acteurgraaf.jpg The graph produced by R</call>
 
 //sql van wiebe, r model van
 + klopt het naarmate actrices ouder zijn zij moeilijker een rol krijgen.
-- <call>jdbc localhost 3306 imdb imdb imdb select actors.Actor as actorname, count(roles.ActorID) as countroles, movies.Year as movieyear from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and actors.Gender ='1' </call>
+- There it is!
+//- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actorname, count(roles.ActorID) as countroles, movies.Year as movieyear from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and actors.Gender ='1' </call>
 ^ <call>system resources/R/oudeactrices.R 2&> /dev/null</call>
 ^ <call>send photo /tmp/oudeactrices.jpg The graph produced by R</call>
 
 //sql van wiebe, r model van
 + zoek uit welke factoren een rol spelen bij het bepalen hoeveel seizoenen van een tv-serie worden gemaakt.
-- <call>jdbc localhost 3306 imdb imdb imdb select actors.Actor as actorname, count(roles.ActorID) as countroles, movies.Year as movieyear, ratings.Rating as serierating from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and SerieName !='NULL'</call>
+- There it is!
+//- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actorname, count(roles.ActorID) as countroles, movies.Year as movieyear, ratings.Rating as serierating from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and SerieName !='NULL'</call>
 ^ <call>system resources/R/factoren.R 2&> /dev/null</call>
 ^ <call>send photo /tmp/factoren.jpg The graph produced by R</call>
 
-//+
-//- <call>jdbc localhost 3306 imdb imdb imdb select </call>
-
-//+ which movies did _ _ *
-//- <call>jdbc localhost 3306 imdb imdb imdb select title from cast_info, name, title, kind_type where person_id = name.id and title.id = movie_id and kind_id = kind_type.id and name like '<star2>, <star>' and kind = 'movie'</call>
-
-+ [*] video formats [*]
-- There it is!
-^ <call>system resources/R/video-format.R 2&> /dev/null</call>
-^ <call>send photo /tmp/video-format.jpg The graph produced by R</call>
-
-// Substitutions
+// SUBSTITUTIONS
 ! sub i'm     = i am
 ! sub i'd     = i would
 ! sub i've    = i have
@@ -141,4 +192,16 @@
 ! sub what're = what are
 ! sub what've = what have
 ! sub what'll = what will
-! sub who's   = who is
+! sub who's = who is
+
+//COMMENTED STUFF
+//+
+//- <call>jdbc localhost 3306 imdb root sql080 select </call>
+
+//+ which movies did _ _ *
+//- <call>jdbc localhost 3306 imdb root sql080 select title from cast_info, name, title, kind_type where person_id = name.id and title.id = movie_id and kind_id = kind_type.id and name like '<star2>, <star>' and kind = 'movie'</call>
+
+//+ [*] video formats [*]
+//- There it is!
+//^ <call>system resources/R/video-format.R 2&> /dev/null</call>
+//^ <call>send photo /tmp/video-format.jpg The graph produced by R</call>

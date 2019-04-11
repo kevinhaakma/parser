@@ -302,7 +302,7 @@ int main() {
 			else if (outputFileName == "directed.csv") {
 				vector<string> v = split(output, seperator[0]);
 
-				if (v[0].find("NULL") != std::string::npos && lastActor != "") {
+				if (v[0].find("0") != std::string::npos && lastActor != "") {
 					v[0] = lastActor;
 
 					output = "";
@@ -310,13 +310,13 @@ int main() {
 						output += s + seperator;
 					}
 				}
-				else if (v[0].find("NULL") == std::string::npos) {
+				else if (v[0].find("0") == std::string::npos) {
 					lastActor = v[0];
 				}
 			}
 
 			//STRING COUNT
-			if (stringCount(output, "NULL") != expressionList.size()) { //if output only contains null => skip
+			if (stringCount(output, "0") != expressionList.size()) { //if output only contains null => skip
 				outputFile << output << endl;
 			}
 		}

@@ -67,8 +67,8 @@ int main() {
 	case actressesRoles:
 		inputFileName = "actresses.list"; //input actresses
 		outputFileName = "actressesRoles.csv"; //output actresses
-		//expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*|\\\"\\w.*)(\\([0-9]|\\(\\?{4}\\))","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" };
-		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}", "\\(([0-9]...)\\){1}", "\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\t(\\d{4}|\\d{4}\\-.*)$" };
+		//expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*|\\\"\\w.*)(\\([0-9]|\\(\\?{4}\\))","\\(([0-9]...)\\){1}","\\[(.*)\\]{1}" };\[(.*){1}\]
+		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t((\\\"|\\w).*)\\s\\([0-9]{4}", "\\(([0-9]...)\\){1}", "\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\[(.*){1}\\]" };
 		//backup first: ^[^\t](\w.*?|.*?)\t als de roles niet correct worden geprint, probeer deze s
 		//1= (.*\w|.*\w\))\t //actress //748 steps
 		//2= \t(\w.*|\"\w.*)(\([0-9]|\(\?{4}\))//movie //3066 steps

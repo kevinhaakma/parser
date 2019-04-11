@@ -39,17 +39,17 @@ int main() {
 	//enum with output choices
 	enum outputFilename { actressesRoles, actresses, actorsRoles, actors, directed, directors, movies, countries, genres, soundtracks, ratings };
 	list <string> fileNames = { "0: actressesRoles", "1: actresses", "2: actorsRoles", "3: actors", "4: directed", "5: directors", "6: movies", "7: countries", "8: genres", "10: ratings" };
-	//0 actressesRoles (actor index) (needs to be added to roles)
-	//1 actresses (needs to be added to actors) (gender needs to be added)
-	//2 actorsRoles (actor index)
-	//3 actors * (gender needs to be added)
-	//4 directed * (director index)
-	//5 directors *
-	//6 movies * (movie index)
-	//7 countries *
-	//8 genres *
-	//9 soundtracks 
-	//10 ratings *
+	//0 actressesRoles (actor index) (needs to be added to roles) //Casper, Elon, 
+	//1 actresses (needs to be added to actors) (gender needs to be added) //Wiebe, Elon, Casper, Kevin
+	//2 actorsRoles (actor index) //Wiebe, Kevin, Elon
+	//3 actors * (gender needs to be added) //Kevin, Elon
+	//4 directed * (director index) //Casper, Elon
+	//5 directors * //Casper, Wiebe, Elon
+	//6 movies * (movie index) //Casper, Elon, Wiebe
+	//7 countries * //Casper, Elon, Wiebe
+	//8 genres * //Elon, Wiebe
+	//9 soundtracks //Elon
+	//10 ratings * //Elon, Kevin, Wiebe
 
 	int input;
 	for (string x : fileNames)
@@ -97,11 +97,6 @@ int main() {
 		//5 season = ".(\\d{1,10})\\)\\\}"
 		//6 episode = "\\t(\\d{4}|\\d{4}\\-.*)$"
 		//7 role = "\\[(.*)\\]{1}"
-																																														   
-		//1= actor ^.*?(?=\\t)
-		//2= movie (\\t(.*) \\([0-9])\{1\}
-		//3= year \\(([0-9]...)\\)\{1\}
-		//4= role \\[(.*)\]\{1\}
 		break;
 	case actors:
 		inputFileName = "actors.list"; //input actors
@@ -110,13 +105,6 @@ int main() {
 		//1= actor ^.*?(?=\t)
 		//to do gender en tabs als null eruit
 		break;
-		/*
-	case directed:
-		inputFileName = "directors.list"; //input directed
-		outputFileName = "directed.csv"; //output directed
-		expressionList = { "(.*\\w|.*\\w\\))\\t", "\\t(\\w.*) (\\([0-9]|\\(\\?{4}\\))", "\\s{2,}\\(([a-zA-Z](.*?)director(.*?)|director)\\)" };
-		break;
-		*/
 	case directed:
 		inputFileName = "directors.list"; //input directed
 		outputFileName = "directed.csv"; //output directed
@@ -129,19 +117,6 @@ int main() {
 		//1= director ^.*?(?=\t)
 		//tabs als null eruit
 		break;
-		/*
-	case movies:
-		inputFileName = "movies.list"; //input movies
-		outputFileName = "movies.csv"; //output movies
-		expressionList = { "\"(.*)\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d{1,2}).",".(\\d{1,2})\\)\\\}","\\s((\\d{4}\-(\\d{4}|\\?{4})|(\\d{4})))" }; //movies
-		//1= movieName \"(.*)\"
-		//2= year \\((\\d{4})\\)
-		//3= serieName \\{(.*)\\(
-		//4= serieSeason \\(#(\\d{1,2}).
-		//5= episode number .(\\d{1,2})\\)\\\}
-		//6= end season \\s((\\d{4}\-(\\d{4}|\\?{4})|(\\d{4})))
-		break;
-		*/
 	case movies:
 		inputFileName = "movies.list"; //input movies
 		outputFileName = "movies.csv"; //output movies
@@ -153,19 +128,6 @@ int main() {
 		//5= episode number .(\d{1,10})\)}
 		//6= end season \t(\d{4}|\d{4}\-.*)$
 		break;
-		/*
-	case movies:
-		inputFileName = "movies.list"; //input movies
-		outputFileName = "movies.csv"; //output movies
-		expressionList = { "\"(.*)\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d{1,10}).",".(\\d{1,10})\\)\\\}","\\t(\\d{4}|\\d{4}\\-.*)$" }; //movies
-		//1= movieName \"(.*)\"
-		//2= year \\((\\d{4})\\)
-		//3= serieName \\{(.*)\\(
-		//4= serieSeason \\(#(\\d{1,10}).
-		//5= episode number .(\\d{1,10})\\)\\\}
-		//6= end season \t(\d{4}|\d{4}\-.*)$
-		break;
-		*/
 	case countries:
 		inputFileName = "countries.list"; //input countries
 		outputFileName = "countries.csv"; //output countries
@@ -177,19 +139,6 @@ int main() {
 		//5=	episode = \(#\d.(\d).
 		//6=	country = \s(\w + -+\w + | \w + )$
 		break;
-		/*
-	case countries:
-		inputFileName = "countries.list"; //input countries
-		outputFileName = "countries.csv"; //output countries
-		expressionList = { "^\"(.*?)\"", "\\((\\d{4})\\)", "\\{(.*)\\(#", "\\(#(\\d).", "\\(#\\d.(\\d).", "\\s(\\w+-+\\w+|\\w+)$" }; //countries
-		//1= movie title = ^"(.*?)"
-		//2=	jaar = \((\d{ 4 })\)
-		//3=	episodenaam = { (.*)\(#
-		//4=	season = \(#(\d).
-		//5=	episode = \(#\d.(\d).
-		//6=	country = \s(\w + -+\w + | \w + )$
-		break;
-		*/
 	case genres:
 		inputFileName = "genres.list"; //input genres
 		outputFileName = "genres.csv"; //output genres
@@ -225,21 +174,6 @@ int main() {
 		//7=season \(#(\d)\.
 		//8=episode \(#\d.(\d{1,10})
 		break;
-		/*
-	case ratings:
-		inputFileName = "ratings.list"; //input ratings
-		outputFileName = "ratings.csv"; //output ratings
-		expressionList = { "([\\d|\\.]{10})","[\\s](\\d[0-9]{0,7})[\\s]","[\\s]([\\d+\\.+\\d]{3})[\\s]","\"(.*)\"","\\((\\d{4})\\)","\\{(.*)\\(","\\(#(\\d).","\\(#\\d.(\\d)." }; //ratings
-		//1=distribution ([\\d|\\.]{10})
-		//2=votes [\\s](\\d[0-9]{0,7})[\\s]
-		//3=ratings [\\s]([\\d+\\.+\\d]{3})[\\s]
-		//4=title \"(.*)\""
-		//5=year "\\((\\d{4})\\)
-		//6=serie title \\{(.*)\\(
-		//7=season \\(#(\\d).
-		//8=episode \\(#\\d.(\\d).
-		break;
-		*/
 	default:
 		//default do nothing here
 		inputFileName = "input.list"; //input list file

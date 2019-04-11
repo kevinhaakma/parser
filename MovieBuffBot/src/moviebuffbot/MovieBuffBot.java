@@ -60,7 +60,7 @@ public class MovieBuffBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         // Return bot token from BotFather
-        return "686913107:AAEZmSH1S505-yPbztgbuSBmnPDK0Jwia2c";
+        return "882363696:AAGY4A3v2LKHBk0bhHeZzl1CsOsFKnPCYFk";
     }
 
 }

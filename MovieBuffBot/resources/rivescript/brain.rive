@@ -42,15 +42,33 @@
 - <call>system dir</call>
 
 + (wat is de datum?|date|vandaag|dag|week|maand)
-- De datum is: <call>netstat</call>
+- De datum is not workign
 
 //wiebe
 + welke acteur heeft de meeste dubbelrollen?
 - <call>jdbc localhost 3306 imdb root kevinhaakma select max distinct(role) as maxrole from roles having maxrole >1</call>
 
 //kevin
-+ test
++ testw
+- <call>system rscript resources/R/wordcloud.R</call>
+^ <call>send photo /temp/wordcloud.jpg The graph produced by R</call>
+
+//kevin
++ testsql
 - <call>jdbc localhost 3306 imdb root kevinhaakma select count(actors) from actors</call>
+
+//kevin
++ testr
+- <call>system rscript resources/R/test.R</call>
+^ <call>send photo c:/temp/output.jpg The graph produced by R</call>
+
+> object hello_world js
+   echo hoi
+< object
+
++ hello world
+- <call>hello_world</call>
+
 
 //wiebe
 + welke acteur heeft de langste filmcarriere?
@@ -62,7 +80,7 @@
 
 //wiebe
 + wat is de gemiddelde waardering van films?
-- <call>jdbc localhost 3306 imdb imdb imdb select avg(Rating) as ratingavg from ratings</call>
+- <call>jdbc localhost 3306 imdb root kevinhaakma select avg(Rating) as ratingavg from ratings</call>
 
 //wiebe
 + welke acteur of actrice speelt het meest in de slechtst gewaardeerde * _ gemiddelde.

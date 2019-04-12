@@ -2,9 +2,11 @@
 
 # install.packages("RMySQL")
 library(RMySQL)
+library(DBI)
 
 #wiebe R
 #db connection
+#con <- dbConnect(MySQL(), dbname="imdb", user="root", password="sql080")
 con <- dbConnect(MySQL(), dbname="imdb", user="root", password="sql080")
 
 #values
@@ -19,18 +21,27 @@ query <- paste("select count(distinct(roles.Actor)) as countRoles, ratings.Votes
 values <- dbGetQuery(con, query )
 
 
-values <- dbGetQuery(con, "")
+#values <- dbGetQuery(con, "")
 str(values)
 #model
-model <-glm(allVotes~countRoles,data=values,family=binomial)
+#model <-glm(allVotes~countRoles,data=values,family=binomial)
+model <-glm(allVotes~countRoles,data=values)
 summary(model)
 
 #prediction
 predictTest <-predict(model,type="response")
+#predictTest <-predict(model,type="factor")
+#predictTest <-predict(model,type="class")
+#predictTest <-predict(model,type="numeric")
 
 #library roc
 library(ROCR)
-ROCRperfi <-performance(predictTest,"tpr","fpr")
+
+#ROCRpred=predict(predictTest,values$countRoles)
+ROCRpred=predict(predictTest,values$countRoles,type="numeric")
+ROCRperf=performance(ROCRpred,"tpr","fpr")
+
+#ROCRperfi <-performance(predictTest,"tpr","fpr")
 
 #ROC plot
 invisible(jpeg('/tmp/factoren.jpg'))

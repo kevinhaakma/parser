@@ -8,23 +8,34 @@ library(RMySQL)
 con <- dbConnect(MySQL(), dbname="imdb", user="root", password="sql080")
 
 #values
-values <- dbGetQuery(con, "select count(roles.ActorID) as countRoles, movies.Year as movieYear, ratings.Votes as allVotes from roles, movies, ratings where roles.Movie = movies.Movie and movies.Movie = ratings.Title")
+#values <- dbGetQuery(con, "select count(roles.Actor) as countRoles, movies.Year as movieYear, ratings.Votes as allVotes from roles, movies, ratings where roles.Movie = movies.Movie and movies.Movie = ratings.Title")
+#values <- dbGetQuery(con, "select count(roles.Actor) as countRoles, movies.Year as movieYear, ratings.Votes as allVotes from roles, movies, ratings where roles.Movie = movies.Movie and movies.Movie = ratings.Title")
+#values <- dbGetQuery(con, "select count(roles_sm.Actor) as countRoles, ratings_sm.Votes as allVotes from roles_sm, ratings_sm where roles_sm.Movie = ratings_sm.Movie")
+#values <- dbGetQuery(con, "select count(roles.Actor) as countRoles, ratings.Votes as allVotes from roles, ratings where roles.Movie = ratings.Title limit 0,200")
+#values <- dbGetQuery(con, "")
 
+query <- paste("select count(distinct(roles.Actor)) as countRoles, ratings.Votes as allVotes from roles, ratings where roles.Movie = ratings.Title and roles.Movie !='0' and roles.Actor !='0' and ratings.Title !='0' and ratings.Votes !=0 group by ratings.Title order by ratings.Title limit 0,1000")
+
+values <- dbGetQuery(con, query )
+
+
+values <- dbGetQuery(con, "")
+str(values)
 #model
-model <-glm(allVotes~countRoles+movieYear,data=values,family=binomial)
+model <-glm(allVotes~countRoles,data=values,family=binomial)
 summary(model)
 
 #prediction
-#predictTest <-predict(model,type="response")
+predictTest <-predict(model,type="response")
 
 #library roc
-#library(ROCR)
-#ROCRperfi <-performance(predictTest,"tpr","fpr")
+library(ROCR)
+ROCRperfi <-performance(predictTest,"tpr","fpr")
 
 #ROC plot
-#invisible(jpeg('/tmp/factoren.jpg'))
-#plot(ROCRperfi,colorize=true,print.cutoffs.at=seq(0,1,0.1))
-#invisible(dev.off())
+invisible(jpeg('/tmp/factoren.jpg'))
+plot(ROCRperfi,colorize=true,print.cutoffs.at=seq(0,1,0.1))
+invisible(dev.off())
 #abline(0,1)
 
 #AUC

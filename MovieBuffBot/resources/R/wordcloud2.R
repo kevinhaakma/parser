@@ -1,5 +1,7 @@
 #!/usr/bin/Rscript
 
+args = commandArgs(trailingOnly=TRUE)
+
 # install.packages("RMySQL")
 library(RMySQL)
 
@@ -15,9 +17,14 @@ library("tm")
 library("SnowballC")
 library("wordcloud")
 library("RColorBrewer")
+library("magick")
+library("TraMineRextras")
 
-con <- dbConnect(MySQL(), dbname="imdb", user="root", password="kevinhaakma")
-values <- dbGetQuery(con, "jdbc localhost 3306 imdb root kevinhaakma select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies, countries where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and countries.MovieID = movies.MovieID and Country ='<star>'")
+con <- dbConnect(MySQL(), dbname="imdb", user="root", password="sql080")
+
+query <- paste("select name as actorname from actors where name like '%",args,"%'",sep="")
+
+values <- dbGetQuery(con, query )
 
 # Load the data as a corpus
 docs <- Corpus(VectorSource(values))
@@ -52,6 +59,9 @@ head(d, 10)
 
 #generate word cloud
 set.seed(1234)
+invisible(jpeg('c:/temp/output.jpg'))
 wordcloud(words = d$word, freq = d$freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.35,
           colors=brewer.pal(8, "Dark2"))
+
+invisible(dev.off())

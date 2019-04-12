@@ -1,7 +1,5 @@
 #!/usr/bin/Rscript
 
-args = commandArgs(trailingOnly=TRUE)
-
 # install.packages("RMySQL")
 library(RMySQL)
 
@@ -10,21 +8,16 @@ library(RMySQL)
 # Install
 #install.packages("tm")  # for text mining
 #install.packages("SnowballC") # for text stemming
-#install.packages("wordcloud") # word-cloud generator
+#install.packages("wordcloud") # word-cloud generator 
 #install.packages("RColorBrewer") # color palettes
 # Load
 library("tm")
 library("SnowballC")
 library("wordcloud")
 library("RColorBrewer")
-library("magick")
-library("TraMineRextras")
 
-con <- dbConnect(MySQL(), dbname="imdb", user="root", password="kevinhaakma")
-
-query <- paste("select name as actorname from actors where name like '%",args,"%'",sep="")
-
-values <- dbGetQuery(con, query )
+con <- dbConnect(MySQL(), dbname="imdb", user="root", password="sql080")
+values <- dbGetQuery(con, "select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies, countries where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and countries.MovieID = movies.MovieID and Country ='<star>'")
 
 # Load the data as a corpus
 docs <- Corpus(VectorSource(values))
@@ -42,7 +35,7 @@ docs <- tm_map(docs, removeNumbers)
 docs <- tm_map(docs, removeWords, stopwords("english"))
 # Remove your own stop word
 # specify your stopwords as a character vector
-docs <- tm_map(docs, removeWords, c("blabla1", "blabla2"))
+docs <- tm_map(docs, removeWords, c("blabla1", "blabla2")) 
 # Remove punctuations
 docs <- tm_map(docs, removePunctuation)
 # Eliminate extra white spaces
@@ -59,9 +52,6 @@ head(d, 10)
 
 #generate word cloud
 set.seed(1234)
-invisible(jpeg('c:/temp/output.jpg'))
 wordcloud(words = d$word, freq = d$freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"))
-
-invisible(dev.off())

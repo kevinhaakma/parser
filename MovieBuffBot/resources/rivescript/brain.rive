@@ -42,7 +42,8 @@
 ^ welke 2 acteurs of actrices hebben in de meeste films gespeeld?\n
 ^ wat zijn 2 minst op gestemde films?\n
 ^ welke films spelen in meer dan 1 land?\n
-^ welke factoren populaire film\n
+^ welke factoren maken een film populair?\n
+^ welke film heeft veel rollen en votes?\n
 
 //wiebe beheer FOREIGN KEYS ID
 + [*] management [*]
@@ -155,21 +156,32 @@
 - <call>jdbc localhost 3306 imdb root sql080 select distinct(Movie) from countries group by Movie having count(Country) >1 order by count(Country) desc</call>
 //SELECT distinct(Movie) FROM imdb.countries group by Movie having count(Country) >1
 
-
+//SQL JOIN zonder foreign key
+//wiebe + casper //
++ welke film heeft veel rollen en votes?
+- <call>jdbc localhost 3306 imdb root sql080 select count(roles_sm.Actor) as countRoles, ratings_sm.Votes as allVotes from roles_sm, ratings_sm where roles_sm.Movie = ratings_sm.Movie</call>
+//select count(roles_sm.Actor) as countRoles, ratings_sm.Votes as allVotes from roles_sm, ratings_sm where roles_sm.Movie = ratings_sm.Movie
 
 //VISUALISATIES en R
 
-//kevin //checked
+//kevin //checked wiebe
 + barplot actors
 - <call>system rscript resources/R/test.R</call>
 ^ <call>send photo C:/temp/output.jpg The graph produced by R</call>
 
+//casper + wiebe + kevin
++ wordcloud *
+- <call>system rscript resources/R/wordcloud2.R <star></call>
+^ <call>send photo c:/temp/wordcloud.jpg The graph produced by R</call>
+
+
+
 //sql van wiebe, wordcloud script van wiebe //checked by Kevin en Casper
-+ wordcloud * kies een land _
-- There it is!
+//+ wordcloud * kies een land _
+//- There it is!
 //- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies, countries where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and countries.MovieID = movies.MovieID and Country ='<star>'</call>
-^ <call>system resources/R/wordcloud2.R 2&> /dev/null</call>
-^ <call>send photo /tmp/wordcloud.jpg The graph produced by R</call>
+//^ <call>system resources/R/wordcloud2.R 2&> /dev/null</call>
+//^ <call>send photo /tmp/wordcloud.jpg The graph produced by R</call>
 
 //sql van wiebe, r script van
 + maak een visuele weergave van de hoeveelheid acteurs voor een film.
@@ -185,12 +197,12 @@
 ^ <call>system resources/R/oudeactrices.R 2&> /dev/null</call>
 ^ <call>send photo /tmp/oudeactrices.jpg The graph produced by R</call>
 
-//sql van wiebe, r model van
-+ welke factoren populaire film
-- There it is!
+//sql van wiebe, r model van wiebe + casper
++ welke factoren maken een film populair?
+//- There it is!
 //- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actorname, count(roles.ActorID) as countroles, movies.Year as movieyear, ratings.Rating as serierating from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and SerieName !='NULL'</call>
-^ <call>system resources/R/factoren.R 2&> /dev/null</call>
-//^ <call>send photo /tmp/factoren.jpg The graph produced by R</call>
+- <call>system rscript resources/R/factoren.R 2&> /dev/null</call>
+^ <call>send photo c:/temp/factoren.jpg The graph produced by R</call>
 
 // SUBSTITUTIONS
 ! sub i'm     = i am

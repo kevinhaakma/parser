@@ -18,10 +18,14 @@
 + [*] start [*]
 - Ik ben de Movie Chat bot! Stel me vragen over je favoriete film. Type /help voor voorbeeld vragen.
 
+//wiebe
++ fluffy decided to go flying again
+- I pity da fool
+
 //HELP
 //wiebe
 + [*] help [*]
-- You can ask me questions like:\n
+- Je kan me vragen stellen zoals:\n
 ^ In welke films speelde Joop Braakhekke?\n
 ^ Welke acteur heeft de langste filmcarriere?\n
 ^ Welke acteur heeft de meeste dubbelrollen?\n
@@ -32,10 +36,13 @@
 ^ Wordcloud van acteurs uit een land. Kies een land Nederland\n
 ^ Maak een visuele weergave van de hoeveelheid acteurs voor een film.\n
 ^ Klopt het naarmate actrices ouder zijn zij moeilijker een rol krijgen.\n
-^\n
-^\n
-^ show files\n
-^ Wat zijn veelgebruikte video formats?
+^ tel actors\n
+^ barplot actors\n
+^ fluffy decided to go flying again\n
+^ welke 2 acteurs of actrices hebben in de meeste films gespeeld?\n
+^ wat zijn 2 minst op gestemde films?\n
+^ welke films spelen in meer dan 1 land?\n
+^ welke factoren populaire film\n
 
 //wiebe beheer FOREIGN KEYS ID
 + [*] management [*]
@@ -103,56 +110,65 @@
 - <call>system dir</call>
 
 + (wat is de datum?|date|vandaag|dag|week|maand)
-- De datum is not workign
+- De datum is: <call>netstat</call>
 
-//kevin
-+ wordcloud *
-- <call>system rscript resources/R/wordcloud.R <star></call>
-^ <call>send photo c:/temp/output.jpg The graph produced by R</call>
+//kevin //checked
++ tel actors
+- <call>jdbc localhost 3306 imdb root sql080 select count(Actor) from actors</call>
 
-//kevin
-+ testsql
-- <call>jdbc localhost 3306 imdb root kevinhaakma select count(actors) from actors</call>
+//MOVIE QUESTIONS
+//wiebe
++ in welke films speelde _ _?
+- <call>jdbc localhost 3306 imdb root sql080 select distinct(Movie) from imdb.roles where Actor like '%<star2>,<star>%';</call>
 
-//kevin
-+ testr
-- <call>system rscript resources/R/test.R</call>
-^ <call>send photo c:/temp/output.jpg The graph produced by R</call>
-
-> object hello_world js
-   echo hoi
-< object
-
-+ hello world
-- <call>hello_world</call>
-
+//wiebe //checked
++ welke acteur heeft de meeste dubbelrollen?
+- <call>jdbc localhost 3306 imdb root sql080 select Actor, count(Role) from roles group by Actor having count(Role) >1 order by count(Role) desc limit 0,1</call>
 
 //wiebe
 + welke acteur heeft de langste filmcarriere?
-- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor, min(movies.Year) as minmov, max(movies.Year) as maxmov, maxmo - minmov as maxrange from roles, actors, movies order by maxrange limit 0,1</call>
+- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor, min(movies.Year) as minmov, max(movies.Year) as maxmov, maxmo - minmov as maxrange from roles, actors, movies where roles.Movie = movies.Movie and roles.Actor = actors.Actor and actors.Actor order by maxrange desc limit 0,1</call>
 
-//wiebe
-+ in welke films speelde _ *
-- <call>jdbc localhost 3306 imdb root sql080 select dictinct(movies.Title) as dismovie from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and Actor like ='<star>'</call>
 
-//wiebe
+//wiebe //checked
 + wat is de gemiddelde waardering van films?
-- <call>jdbc localhost 3306 imdb root kevinhaakma select avg(Rating) as ratingavg from ratings</call>
+- <call>jdbc localhost 3306 imdb root sql080 select avg(Rating) as ratingavg from ratings</call>
 
 //wiebe
-+ welke acteur of actrice speelt het meest in de slechtst gewaardeerde * _ gemiddelde.
-- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actorname, count(roles.ActorID) as maxbad from roles, actors, movies, ratings where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and ratings.MovieID = movies.MovieID and ratings.Rating < '<star>' order by maxbad LIMIT 0,1</call>
+//+ welke acteur of actrice speelt het meest in de slechtst gewaardeerde * _ gemiddelde.
+//- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actorname, count(roles.ActorID) as maxbad from roles, actors, movies, ratings where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and ratings.MovieID = movies.MovieID and ratings.Rating < '<star>' order by maxbad LIMIT 0,1</call>
 
 //wiebe
-+ welke _ acteurs of actrices hebben samen in de meeste films gespeeld?
-- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actor, count(roles.ActorID) as rolecount from roles,actors,movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID order by rolecount limit 0,<star></call>
+//+ welke _ acteurs of actrices hebben samen in de meeste films gespeeld?
+//- <call>jdbc localhost 3306 imdb root sql080 select Actor from roles group by Movie count(Movie) order by count(Movie) desc limit 0,<star></call>
+
+//wiebe + casper //checked
++ welke # acteurs of actrices hebben in de meeste films gespeeld?
+- <call>jdbc localhost 3306 imdb root sql080 select distinct(Actor) from roles group by Movie order by count(Movie) desc limit 0,<star></call>
+
+//wiebe + casper //checked
++ wat zijn # minst op gestemde films?
+- <call>jdbc localhost 3306 imdb root sql080 select Title, min(Votes) as LowestVotes from ratings where Votes >1 order by Votes desc limit 0,<star></call>
+
+//wiebe + casper //
++ welke films spelen in meer dan 1 land?
+- <call>jdbc localhost 3306 imdb root sql080 select distinct(Movie) from countries group by Movie having count(Country) >1 order by count(Country) desc</call>
+//SELECT distinct(Movie) FROM imdb.countries group by Movie having count(Country) >1
+
+
 
 //VISUALISATIES en R
-//sql van wiebe, wordcloud script van
+
+//kevin //checked
++ barplot actors
+- <call>system rscript resources/R/test.R</call>
+^ <call>send photo C:/temp/output.jpg The graph produced by R</call>
+
+//sql van wiebe, wordcloud script van wiebe //checked by Kevin en Casper
 + wordcloud * kies een land _
 - There it is!
 //- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actorname, count(roles.ActorID) as countroles from roles, actors, movies, countries where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and countries.MovieID = movies.MovieID and Country ='<star>'</call>
-^ <call>system resources/R/wordcloud.R 2&> /dev/null</call>
+^ <call>system resources/R/wordcloud2.R 2&> /dev/null</call>
 ^ <call>send photo /tmp/wordcloud.jpg The graph produced by R</call>
 
 //sql van wiebe, r script van
@@ -170,11 +186,11 @@
 ^ <call>send photo /tmp/oudeactrices.jpg The graph produced by R</call>
 
 //sql van wiebe, r model van
-+ zoek uit welke factoren een rol spelen bij het bepalen hoeveel seizoenen van een tv-serie worden gemaakt.
++ welke factoren populaire film
 - There it is!
 //- <call>jdbc localhost 3306 imdb root sql080 select actors.Actor as actorname, count(roles.ActorID) as countroles, movies.Year as movieyear, ratings.Rating as serierating from roles, actors, movies where roles.MovieID = movies.MovieID and roles.ActorID = actors.ActorID and SerieName !='NULL'</call>
 ^ <call>system resources/R/factoren.R 2&> /dev/null</call>
-^ <call>send photo /tmp/factoren.jpg The graph produced by R</call>
+//^ <call>send photo /tmp/factoren.jpg The graph produced by R</call>
 
 // SUBSTITUTIONS
 ! sub i'm     = i am
